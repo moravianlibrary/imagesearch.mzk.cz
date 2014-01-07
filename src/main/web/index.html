@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>LIRE - Lucene Image Retrieval</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+	<script src="js/jquery-l.js"></script>
+	<script src="js/functions.js"></script>
+</head>
+
+
+<body>
+<div class="main">
+    <div style="width:100%; text-align:right"><img src="img/logo.png"/></div>
+    <h1>LIRE Web Demo</h1>
+
+    <p>This page is a simple demonstrator for the LIRE image search library. The images below show the query image and
+        the results. Use the images to trigger a new content based search request. </p>
+	<script>
+	
+$( document ).ready(function() {
+	
+	$('#searchUrlForm').submit(function() {
+	    return false;
+	});
+	
+	$('#url_search').click(function() {
+	    var url = $('#searchUrlForm input[name=url]').val();
+	    console.log(url);
+	    searchIdentity(url);
+	    searchSimiliar(url);
+	});
+	
+});
+	</script>
+	<h1 id="identity">Identity</h1>
+	<br style="clear:both;"/>
+	<p><i id="perfIdentity">Index search time</i></p>
+	
+    <h1 id="similiar">Similar</h1>
+	<br style="clear:both;"/>
+	<p><i id="perfSimilar">Index search time</i></p>
+
+<p>
+  <form id="searchUrlForm">
+    <input type="text" name="url"/>
+    <input type="button" id="url_search" value="Search"/>
+  </form>
+</p>
+</div>
+</body>
+</html>
