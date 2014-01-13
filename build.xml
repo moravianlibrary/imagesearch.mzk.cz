@@ -40,7 +40,7 @@
         <property file="${config}/build.properties"/>
         <echo file="default.mf" append="false">Build-Date: ${touch.time}
 Build-Number: ${build-number}
-Class-Path: lib/commons-codec-1.8.jar lib/lire.jar lib/JOpenSurf.jar
+Class-Path: lib/commons-codec-1.8.jar lib/lire.jar lib/JOpenSurf.jar lib/liresolr-lsh.jar
 Main-Class: net.semanticmetadata.lire.solr.ParallelSolrIndexer
         </echo>
         <javac srcdir="${src}" destdir="${build}" debug="true" debuglevel="lines,vars,source">

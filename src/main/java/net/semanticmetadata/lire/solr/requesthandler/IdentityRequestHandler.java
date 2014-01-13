@@ -1,6 +1,9 @@
 package net.semanticmetadata.lire.solr.requesthandler;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,13 +14,14 @@ import java.util.Properties;
 
 import javax.imageio.ImageIO;
 
+import net.semanticmedatada.lire.solr.lsh.LSHHashTable;
+import net.semanticmedatada.lire.solr.lsh.SurfInterestPoint;
 import net.semanticmetadata.lire.DocumentBuilder;
 import net.semanticmetadata.lire.imageanalysis.ColorLayout;
 import net.semanticmetadata.lire.imageanalysis.SurfFeature;
 import net.semanticmetadata.lire.impl.SimpleResult;
 import net.semanticmetadata.lire.impl.SurfDocumentBuilder;
 import net.semanticmetadata.lire.indexing.hashing.BitSampling;
-import net.semanticmetadata.lire.solr.SurfInterestPoint;
 import net.semanticmetadata.lire.solr.utils.PropertiesUtils;
 import net.semanticmetadata.lire.solr.utils.QueryImageUtils;
 import net.semanticmetadata.lire.solr.utils.SurfUtils;
@@ -58,12 +62,17 @@ public class IdentityRequestHandler extends RequestHandlerBase {
 		if (url == null || url.isEmpty()) {
 			throw new IllegalArgumentException("You have to specify the url parameter.");
 		}
+		long time = System.currentTimeMillis();
 		// Create hashes from the image.
 		BufferedImage image = ImageIO.read(new URL(url).openStream());
 		image = ImageUtils.trimWhiteSpace(image);
+		res.add("ImageDownloadingTime", System.currentTimeMillis() - time);
+		time = System.currentTimeMillis();
 		// Use ColorLayout to extract feature from the image.
 		ColorLayout feature = new ColorLayout();
 		feature.extract(image);
+		res.add("ImageProcessingTime", System.currentTimeMillis() - time);
+		time = System.currentTimeMillis();
 		// Create hashes
 		BitSampling.readHashFunctions();
 		int[] hashes = BitSampling.generateHashes(feature.getDoubleHistogram());
@@ -75,12 +84,13 @@ public class IdentityRequestHandler extends RequestHandlerBase {
 		Properties properties = PropertiesUtils.getProperties(searcher.getCore());
 		// Read candidateResultNumber from config.properties file.
 		int numColorLayoutImages = Integer.parseInt(properties.getProperty("numColorLayoutImages"));
+		res.add("LoadingMetaDataTime", System.currentTimeMillis() - time);
 		// Taking the time of search for statistical purposes.
-        long time = System.currentTimeMillis();
+        time = System.currentTimeMillis();
         TopDocs docs = searcher.search(query, numColorLayoutImages);
         time = System.currentTimeMillis() - time;
         res.add("RawDocsCount", docs.scoreDocs.length + "");
-        res.add("RawDocsSearchTime", time + "");
+        res.add("RawDocsSearchTime", time);
         // re-rank
         time = System.currentTimeMillis();
         LinkedList<SimpleResult> resultScoreDocs = new LinkedList<SimpleResult>();
@@ -96,7 +106,6 @@ public class IdentityRequestHandler extends RequestHandlerBase {
         	// Create feature
         	ColorLayout tmpFeauture = new ColorLayout();
         	tmpFeauture.setByteArrayRepresentation(bytesRef.bytes, bytesRef.offset, bytesRef.length);
-        	//BytesRef binaryValue = doc.getField("cl_hi").binaryValue();
         	
         	// compute a distance
         	tmpDistance = feature.getDistance(tmpFeauture);
@@ -106,7 +115,7 @@ public class IdentityRequestHandler extends RequestHandlerBase {
         	}
         }
         time = System.currentTimeMillis() - time;
-        res.add("ReRankSearchTime", time + "");
+        res.add("ReRankCLTime", time);
         // Surf re-rank
         time = System.currentTimeMillis();
         
@@ -117,7 +126,7 @@ public class IdentityRequestHandler extends RequestHandlerBase {
 			map.put("d", "" + resultScoreDocs.get(0).getDistance());
 			res.add("doc", map);
         } else if (resultScoreDocs.size() >= 1) {
-        	SimpleResult surfIdentityResult = surfIdentityCheck(image, resultScoreDocs, properties);
+        	SimpleResult surfIdentityResult = surfIdentityCheck(image, resultScoreDocs, reader, properties);
         	if (surfIdentityResult != null) {
         		res.add("identity", true);
         		HashMap<String, String> map = new HashMap<String, String>(2);
@@ -131,7 +140,7 @@ public class IdentityRequestHandler extends RequestHandlerBase {
         	res.add("identity", false);
         }
         time = System.currentTimeMillis() - time;
-        res.add("ReRankSurfTime", time + "");
+        res.add("ReRankSurfTime", time);
         
         /*LinkedList<HashMap<String, String>> result = new LinkedList<HashMap<String, String>>();
         for (SimpleResult r : resultScoreDocs) {
@@ -143,7 +152,7 @@ public class IdentityRequestHandler extends RequestHandlerBase {
         res.add("docs", result);*/
 	}
 	
-	private SimpleResult surfIdentityCheck(BufferedImage queryImage, LinkedList<SimpleResult> candidates, Properties properties) {
+	private SimpleResult surfIdentityCheck(BufferedImage queryImage, LinkedList<SimpleResult> candidates, IndexReader reader, Properties properties) throws IOException, ClassNotFoundException {
     	SurfDocumentBuilder sb = new SurfDocumentBuilder();
     	Document query = sb.createDocument(QueryImageUtils.resizeQueryImage(queryImage, properties), "image");
     	
@@ -158,32 +167,34 @@ public class IdentityRequestHandler extends RequestHandlerBase {
 			SurfInterestPoint sip = new SurfInterestPoint(feature.descriptor);
 			queryPoints.add(sip);
 		}
-    	// sort for faster compare
-    	Collections.sort(queryPoints);
+
     	
     	Document minDistanceDoc = null;
     	int minDistanceDocIndexNumber = 0;
     	float minDistance = Float.MAX_VALUE;
     	
+    	LSHHashTable.initialize();
+    	
+    	BinaryDocValues binaryValues = MultiDocValues.getBinaryValues(reader, "su_hi");
+    	BytesRef bytesRef = new BytesRef();
+    	
 		for (SimpleResult candidate : candidates) {
-			Document doc = candidate.getDocument();
 			// load interest points from document
-        	ArrayList<SurfInterestPoint> docPoints = new ArrayList<SurfInterestPoint>();
-        	IndexableField[] docFields = doc.getFields("su_hi");
-        	for (IndexableField docField : docFields) {
-        		SurfFeature feature = new SurfFeature();
-        		feature.setByteArrayRepresentation(docField.binaryValue().bytes, docField.binaryValue().offset, docField.binaryValue().length);
-    			SurfInterestPoint sip = new SurfInterestPoint(feature.descriptor);
-    			docPoints.add(sip);
-    		}
-        	float tmpDistance = SurfUtils.getDistance(docPoints, queryPoints);
+        	binaryValues.get(candidate.getIndexNumber(),bytesRef);
+        	
+        	ByteArrayInputStream docInputStream = new ByteArrayInputStream(bytesRef.bytes, bytesRef.offset, bytesRef.length);
+        	ObjectInputStream docOis = new ObjectInputStream(docInputStream);
+        	docOis.close();
+        	LSHHashTable docTable = (LSHHashTable) docOis.readObject();
+        	
+        	float tmpDistance = SurfUtils.getDistance(queryPoints, docTable);
         	if (tmpDistance >= threshold) {
         		continue;
         	}
         	tmpDistance *= candidate.getDistance();
         	if (tmpDistance < minDistance) {
         		minDistance = tmpDistance;
-        		minDistanceDoc = doc;
+        		minDistanceDoc = candidate.getDocument();
         		minDistanceDocIndexNumber = candidate.getIndexNumber();
         	}
 		}

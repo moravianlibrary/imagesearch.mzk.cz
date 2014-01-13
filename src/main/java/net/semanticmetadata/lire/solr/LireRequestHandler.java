@@ -40,7 +40,9 @@
 package net.semanticmetadata.lire.solr;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +55,8 @@ import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 
+import net.semanticmedatada.lire.solr.lsh.LSHHashTable;
+import net.semanticmedatada.lire.solr.lsh.SurfInterestPoint;
 import net.semanticmetadata.lire.DocumentBuilder;
 import net.semanticmetadata.lire.imageanalysis.ColorLayout;
 import net.semanticmetadata.lire.imageanalysis.EdgeHistogram;
@@ -163,7 +167,7 @@ public class LireRequestHandler extends RequestHandlerBase {
         }
     }
     
-    private void surfUrlSearch(SolrQueryRequest req, SolrQueryResponse rsp) throws IOException, ParseException {
+    private void surfUrlSearch(SolrQueryRequest req, SolrQueryResponse rsp) throws IOException, ParseException, ClassNotFoundException {
     	String url = req.getParams().get("url");
     	int rows = req.getParams().getInt("rows");
     	String mode = req.getParams().get("mode");
@@ -208,8 +212,6 @@ public class LireRequestHandler extends RequestHandlerBase {
     			SurfInterestPoint sip = new SurfInterestPoint(feature.descriptor);
     			queryPoints.add(sip);
     		}
-        	// sort for faster compare
-        	Collections.sort(queryPoints);
 
         	SolrSurfFeatureHistogramBuilder sh = new SolrSurfFeatureHistogramBuilder(null);
         	sh.setClusterFile(req.getCore().getDataDir() + "/clusters-surf.dat");
@@ -224,20 +226,19 @@ public class LireRequestHandler extends RequestHandlerBase {
         	float maxDistance = -1f;
             float tmpScore;
         	
+            LSHHashTable.initialize();
+        	BinaryDocValues binaryValues = MultiDocValues.getBinaryValues(reader, "su_hi");
+        	BytesRef bytesRef = new BytesRef();
+            
         	for (int i = 0; i < docs.scoreDocs.length; i++) {
-        		Document doc = reader.document(docs.scoreDocs[i].doc);
-        		
         		// load interest points from document
-            	ArrayList<SurfInterestPoint> docPoints = new ArrayList<SurfInterestPoint>();
-            	IndexableField[] docFields = doc.getFields("su_hi");
-            	for (IndexableField docField : docFields) {
-            		SurfFeature feature = new SurfFeature();
-            		feature.setByteArrayRepresentation(docField.binaryValue().bytes, docField.binaryValue().offset, docField.binaryValue().length);
-        			SurfInterestPoint sip = new SurfInterestPoint(feature.descriptor);
-        			docPoints.add(sip);
-        		}
+            	binaryValues.get(docs.scoreDocs[i].doc, bytesRef);
+            	ByteArrayInputStream docInputStream = new ByteArrayInputStream(bytesRef.bytes, bytesRef.offset, bytesRef.length);
+            	ObjectInputStream docOis = new ObjectInputStream(docInputStream);
+            	docOis.close();
+            	LSHHashTable docTable = (LSHHashTable) docOis.readObject();
             	
-                tmpScore = SurfUtils.getDistance(docPoints, queryPoints);
+                tmpScore = SurfUtils.getDistance(queryPoints, docTable);
                 if (resultScoreDocs.size() < rows) {
                     resultScoreDocs.add(new SimpleResult(tmpScore, searcher.doc(docs.scoreDocs[i].doc), docs.scoreDocs[i].doc));
                     maxDistance = resultScoreDocs.last().getDistance();
@@ -266,7 +267,7 @@ public class LireRequestHandler extends RequestHandlerBase {
     	
     }
     
-    private void surfIdSearch(SolrQueryRequest req, SolrQueryResponse rsp) throws IOException, ParseException {
+    private void surfIdSearch(SolrQueryRequest req, SolrQueryResponse rsp) throws IOException, ParseException, ClassNotFoundException {
     	String id = req.getParams().get("id");
     	int rows = req.getParams().getInt("rows");
     	String mode = req.getParams().get("mode");
@@ -321,8 +322,6 @@ public class LireRequestHandler extends RequestHandlerBase {
         			SurfInterestPoint sip = new SurfInterestPoint(feature.descriptor);
         			queryPoints.add(sip);
         		}
-            	// sort for faster compare
-            	Collections.sort(queryPoints);
 
             	SolrSurfFeatureHistogramBuilder sh = new SolrSurfFeatureHistogramBuilder(null);
             	sh.setClusterFile(req.getCore().getDataDir() + "/clusters-surf.dat");
@@ -337,20 +336,20 @@ public class LireRequestHandler extends RequestHandlerBase {
             	float maxDistance = -1f;
                 float tmpScore;
             	
+                LSHHashTable.initialize();
+            	
+            	BinaryDocValues binaryValues = MultiDocValues.getBinaryValues(reader, "su_hi");
+            	BytesRef bytesRef = new BytesRef();
+                
             	for (int i = 0; i < docs.scoreDocs.length; i++) {
-            		Document doc = reader.document(docs.scoreDocs[i].doc);
-            		
             		// load interest points from document
-                	ArrayList<SurfInterestPoint> docPoints = new ArrayList<SurfInterestPoint>();
-                	IndexableField[] docFields = doc.getFields("su_hi");
-                	for (IndexableField docField : docFields) {
-                		SurfFeature feature = new SurfFeature();
-                		feature.setByteArrayRepresentation(docField.binaryValue().bytes, docField.binaryValue().offset, docField.binaryValue().length);
-            			SurfInterestPoint sip = new SurfInterestPoint(feature.descriptor);
-            			docPoints.add(sip);
-            		}
+                	binaryValues.get(docs.scoreDocs[i].doc, bytesRef);
+                	ByteArrayInputStream docInputStream = new ByteArrayInputStream(bytesRef.bytes, bytesRef.offset, bytesRef.length);
+                	ObjectInputStream docOis = new ObjectInputStream(docInputStream);
+                	docOis.close();
+                	LSHHashTable docTable = (LSHHashTable) docOis.readObject();
                 	
-                    tmpScore = SurfUtils.getDistance(docPoints, queryPoints);
+                    tmpScore = SurfUtils.getDistance(queryPoints, docTable);
                     if (resultScoreDocs.size() < rows) {
                         resultScoreDocs.add(new SimpleResult(tmpScore, searcher.doc(docs.scoreDocs[i].doc), docs.scoreDocs[i].doc));
                         maxDistance = resultScoreDocs.last().getDistance();
@@ -409,8 +408,9 @@ public class LireRequestHandler extends RequestHandlerBase {
      * @throws InstantiationException
      * @throws IllegalAccessException
      * @throws ParseException 
+     * @throws ClassNotFoundException 
      */
-    private void handleIdSearch(SolrQueryRequest req, SolrQueryResponse rsp) throws IOException, InstantiationException, IllegalAccessException, ParseException {
+    private void handleIdSearch(SolrQueryRequest req, SolrQueryResponse rsp) throws IOException, InstantiationException, IllegalAccessException, ParseException, ClassNotFoundException {
         SolrIndexSearcher searcher = req.getSearcher();
         String paramId = req.getParams().get("id");
         String paramField = "cl_ha";
@@ -494,8 +494,9 @@ public class LireRequestHandler extends RequestHandlerBase {
      * @throws InstantiationException
      * @throws IllegalAccessException
      * @throws ParseException 
+     * @throws ClassNotFoundException 
      */
-    private void handleUrlSearch(SolrQueryRequest req, SolrQueryResponse rsp) throws IOException, InstantiationException, IllegalAccessException, ParseException {
+    private void handleUrlSearch(SolrQueryRequest req, SolrQueryResponse rsp) throws IOException, InstantiationException, IllegalAccessException, ParseException, ClassNotFoundException {
         SolrParams params = req.getParams();
         String paramUrl = params.get("url");
         String paramField = "cl_ha";

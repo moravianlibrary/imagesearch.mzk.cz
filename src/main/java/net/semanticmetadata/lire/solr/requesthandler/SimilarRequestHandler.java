@@ -1,6 +1,9 @@
 package net.semanticmetadata.lire.solr.requesthandler;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +15,8 @@ import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 
+import net.semanticmedatada.lire.solr.lsh.LSHHashTable;
+import net.semanticmedatada.lire.solr.lsh.SurfInterestPoint;
 import net.semanticmetadata.lire.DocumentBuilder;
 import net.semanticmetadata.lire.imageanalysis.ColorLayout;
 import net.semanticmetadata.lire.imageanalysis.SurfFeature;
@@ -19,7 +24,6 @@ import net.semanticmetadata.lire.impl.SimpleResult;
 import net.semanticmetadata.lire.impl.SurfDocumentBuilder;
 import net.semanticmetadata.lire.indexing.hashing.BitSampling;
 import net.semanticmetadata.lire.solr.SolrSurfFeatureHistogramBuilder;
-import net.semanticmetadata.lire.solr.SurfInterestPoint;
 import net.semanticmetadata.lire.solr.utils.PropertiesUtils;
 import net.semanticmetadata.lire.solr.utils.QueryImageUtils;
 import net.semanticmetadata.lire.solr.utils.SurfUtils;
@@ -65,7 +69,7 @@ public class SimilarRequestHandler extends RequestHandlerBase {
 		if (url == null || url.isEmpty()) {
 			throw new IllegalArgumentException("You have to specify the url parameter.");
 		}
-		
+		long time = System.currentTimeMillis();
 		SolrIndexSearcher searcher = req.getSearcher();
     	searcher.setSimilarity(new BM25Similarity());
     	IndexReader reader = searcher.getIndexReader();
@@ -78,10 +82,13 @@ public class SimilarRequestHandler extends RequestHandlerBase {
     	int numColorLayoutSimImages = Integer.parseInt(properties.getProperty("numColorLayoutSimImages"));
     	int numSurfSimImages = Integer.parseInt(properties.getProperty("numSurfSimImages"));
     	int numSimImages = Integer.parseInt(properties.getProperty("numSimilarImages"));
-		
+		res.add("LoadingMetaDataTime", System.currentTimeMillis() - time);
+		time = System.currentTimeMillis();
 		// Load image
 		BufferedImage image = ImageIO.read(new URL(url).openStream());
 		image = ImageUtils.trimWhiteSpace(image);
+		res.add("ImageDownloadingTime", System.currentTimeMillis() - time);
+		time = System.currentTimeMillis();
 		
 		// Extract image information
 		
@@ -97,44 +104,16 @@ public class SimilarRequestHandler extends RequestHandlerBase {
     	Document suFeat = sb.createDocument(QueryImageUtils.resizeQueryImage(ImageIO.read(new URL(url).openStream()), properties), "image");
     	SolrSurfFeatureHistogramBuilder sh = new SolrSurfFeatureHistogramBuilder(null);
     	sh.setClusterFile(req.getCore().getDataDir() + "/clusters-surf.dat");
+    	res.add("ImageProcessingTime", System.currentTimeMillis() - time);
+		time = System.currentTimeMillis();
     	
-    	// load interest points from document
-    	// has to be loaded before getVisualWords (this method delete surf interest points)
-    	ArrayList<SurfInterestPoint> suPoints = new ArrayList<SurfInterestPoint>();
-    	IndexableField[] queryFields = suFeat.getFields(DocumentBuilder.FIELD_NAME_SURF);
-    	for (IndexableField queryField : queryFields) {
-    		SurfFeature feature = new SurfFeature();
-    		feature.setByteArrayRepresentation(queryField.binaryValue().bytes, queryField.binaryValue().offset, queryField.binaryValue().length);
-			SurfInterestPoint sip = new SurfInterestPoint(feature.descriptor);
-			suPoints.add(sip);
-		}
-    	// sort for faster compare
-    	Collections.sort(suPoints);
-    	
-    	// Get Visual Words
-    	suFeat = sh.getVisualWords(suFeat);
-    	
-		// Create queries
     	/* CL */
 		BooleanQuery clQuery = createQuery(clHash, "cl_ha", 0.5d);
-		/* SURF */
-		Query suQuery = qp.parse(suFeat.getValues(DocumentBuilder.FIELD_NAME_SURF_VISUAL_WORDS)[0]);
+		TopDocs clDocs = searcher.search(clQuery, numColorLayoutImages);
+		res.add("SearchCLTime", System.currentTimeMillis() - time);
 		
-		// Searching..
-		// Taking the time of search for statistical purposes.
-        long time = System.currentTimeMillis();
-        // CL
-        TopDocs clDocs = searcher.search(clQuery, numColorLayoutImages);
-        // Surf
-        TopDocs suDocs = searcher.search(suQuery, numSurfSimImages);
-        
-        time = System.currentTimeMillis() - time;
-        res.add("RawDocsCount", clDocs.scoreDocs.length + suDocs.scoreDocs.length + "");
-        res.add("RawDocsSearchTime", time + "");
-        // re-rank
-        time = System.currentTimeMillis();
-		
-        // Re-rank color layout
+		time = System.currentTimeMillis();
+		// Re-rank color layout
         TreeSet<SimpleResult> clScoreDocs = new TreeSet<SimpleResult>();
         ColorLayout clTmpFeature = new ColorLayout();
         float clTmpDistance;
@@ -162,23 +141,48 @@ public class SimilarRequestHandler extends RequestHandlerBase {
             	maxClDistance = clScoreDocs.last().getDistance();
             }
         }
-        
-        // Re-rank by surf method
-        TreeSet<SimpleResult> resultScoreDocs = new TreeSet<SimpleResult>();
-    	
-    	// Re-rank color layout
-    	for (SimpleResult r : clScoreDocs) {
-			rerank(suPoints, r.getDocument(), r.getIndexNumber(), resultScoreDocs, numSimImages);
+        res.add("ReRankCLTime", System.currentTimeMillis() - time);
+		time = System.currentTimeMillis();
+		
+        // load interest points from document
+    	// has to be loaded before getVisualWords (this method delete surf interest points)
+    	ArrayList<SurfInterestPoint> suPoints = new ArrayList<SurfInterestPoint>();
+    	IndexableField[] queryFields = suFeat.getFields(DocumentBuilder.FIELD_NAME_SURF);
+    	for (IndexableField queryField : queryFields) {
+    		SurfFeature feature = new SurfFeature();
+    		feature.setByteArrayRepresentation(queryField.binaryValue().bytes, queryField.binaryValue().offset, queryField.binaryValue().length);
+			SurfInterestPoint sip = new SurfInterestPoint(feature.descriptor);
+			suPoints.add(sip);
 		}
     	
+    	// Get Visual Words
+    	suFeat = sh.getVisualWords(suFeat);
+		
+		/* SURF */
+		Query suQuery = qp.parse(suFeat.getValues(DocumentBuilder.FIELD_NAME_SURF_VISUAL_WORDS)[0]);
+		
+		// Searching..
+        // Surf
+        TopDocs suDocs = searcher.search(suQuery, numSurfSimImages);
+        res.add("SearchSurfTime", System.currentTimeMillis() - time);
+		time = System.currentTimeMillis();
+        res.add("RawDocsCount", clDocs.scoreDocs.length + suDocs.scoreDocs.length + "");
+        
+        // initialization of LSHHashTable
+        LSHHashTable.initialize();
+        // Re-rank by surf method
+        TreeSet<SimpleResult> resultScoreDocs = new TreeSet<SimpleResult>();
+    	// Re-rank color layout
+    	for (SimpleResult r : clScoreDocs) {
+			rerank(suPoints, r.getDocument(), r.getIndexNumber(), reader, resultScoreDocs, numSimImages);
+		}
     	// Re-rank surf (visual words)
     	for (int i = 0; i < suDocs.scoreDocs.length; i++) {
     		Document doc = reader.document(suDocs.scoreDocs[i].doc);
-    		rerank(suPoints, doc, suDocs.scoreDocs[i].doc, resultScoreDocs, numSimImages);
+    		rerank(suPoints, doc, suDocs.scoreDocs[i].doc, reader, resultScoreDocs, numSimImages);
         }
-    	
     	time = System.currentTimeMillis() - time;
-        res.add("ReRankSearchTime", time + "");
+        res.add("ReRankSurfTime", time + "");
         
         LinkedList<HashMap<String, String>> result = new LinkedList<HashMap<String, String>>();
         for (SimpleResult r : resultScoreDocs) {
@@ -190,21 +194,21 @@ public class SimilarRequestHandler extends RequestHandlerBase {
         res.add("docs", result);
 	}
 	
-	private void rerank(ArrayList<SurfInterestPoint> query, Document doc, int indexNumber, TreeSet<SimpleResult> resultScoreDocs, int numSimImages) {
+	private void rerank(ArrayList<SurfInterestPoint> query, Document doc, int indexNumber, IndexReader reader, TreeSet<SimpleResult> resultScoreDocs, int numSimImages) throws IOException, ClassNotFoundException {
 		
 		float maxDistance = resultScoreDocs.isEmpty()? -1 : resultScoreDocs.last().getDistance();
 		
-		// load interest points from document
-    	ArrayList<SurfInterestPoint> docPoints = new ArrayList<SurfInterestPoint>();
-    	IndexableField[] docFields = doc.getFields("su_hi");
-    	for (IndexableField docField : docFields) {
-    		SurfFeature feature = new SurfFeature();
-    		feature.setByteArrayRepresentation(docField.binaryValue().bytes, docField.binaryValue().offset, docField.binaryValue().length);
-			SurfInterestPoint sip = new SurfInterestPoint(feature.descriptor);
-			docPoints.add(sip);
-		}
+		// load hash from document
+		BinaryDocValues binaryValues = MultiDocValues.getBinaryValues(reader, "su_hi");
+    	BytesRef bytesRef = new BytesRef();
+    	binaryValues.get(indexNumber,bytesRef);
     	
-    	float tmpScore = SurfUtils.getDistance(docPoints, query);
+    	ByteArrayInputStream docInputStream = new ByteArrayInputStream(bytesRef.bytes, bytesRef.offset, bytesRef.length);
+    	ObjectInputStream docOis = new ObjectInputStream(docInputStream);
+    	docOis.close();
+    	LSHHashTable docTable = (LSHHashTable) docOis.readObject();
+    	
+    	float tmpScore = SurfUtils.getDistance(query, docTable);
         if (resultScoreDocs.size() < numSimImages) {
         	resultScoreDocs.add(new SimpleResult(tmpScore, doc, indexNumber));
         } else if (tmpScore < maxDistance) {
