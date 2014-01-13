@@ -189,9 +189,9 @@ indexed=“true” stored=“false” multiValued=“true”/\> \<!– ColorLayo
 required=“false”/\> \<field name=“cl~h~i” type=“binaryDV”
 indexed=“false” stored=“true” required=“false”/\> \<!– SURF –\> \<field
 name=“su~h~a” type=“text~w~s” indexed=“true” stored=“false”
-required=“false”/\> \<field name=“su~h~i” type=“binary” indexed=“false”
-stored=“true” required=“false” multiValued=“true”/\> \<!– Needed for
-SOLR –\> \<field name=“\_version\_” type=“long” indexed=“true”
+required=“false”/\> \<field name=“su~h~i” type=“binaryDV”
+indexed=“false” stored=“true” required=“false”/\> \<!– Needed for SOLR
+–\> \<field name=“\_version\_” type=“long” indexed=“true”
 stored=“true”/\> \</fields\>
 
 [H] [lst:binaryDVDef]

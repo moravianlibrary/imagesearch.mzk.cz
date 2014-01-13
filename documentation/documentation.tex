@@ -18,7 +18,7 @@
 \newminted{properties}{frame=single}
 \newminted{xml}{frame=single}
 
-\addbibresource{document.bib}
+\addbibresource{documentation.bib}
 
 \DefineBibliographyStrings{english}{
 urlseen = {Retrieved},
@@ -241,10 +241,10 @@ We also need to define fields in the \textbf{schema.xml}, in which the Solr will
    <!-- SURF -->
    <field name="su_ha" type="text_ws" indexed="true"
    stored="false" required="false"/>
-   <field name="su_hi" type="binary"  indexed="false"
-   stored="true" required="false" multiValued="true"/>
+   <field name="su_hi" type="binaryDV"  indexed="false"
+   stored="true" required="false"/>
    <!-- Needed for SOLR -->
-   <field name="_version_" type="long" indexed="true"
+   <field name="\_version\_" type="long" indexed="true"
    stored="true"/>
 </fields>
 \end{xmlcode}
