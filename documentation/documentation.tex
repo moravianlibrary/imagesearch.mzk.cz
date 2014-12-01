@@ -45,91 +45,28 @@ java -version
 \end{bashcode}
 \end{listing}
 
-We begin by unzipping the Solr release and copying the \textbf{example} directory to the installed folder. Then we need to copy also directories \textbf{contrib} and \textbf{dist} to our project and then we have to change class-path for these files. All steps we demonstrate in the listing \ref{lst:solrInstallation}.
+We begin by unzipping the Solr release. Created directory we will mark as \textit{\$SOLR\_HOME}. Solr distribution contains example server as a template for our own installation. So we must copy \textit{example} directory and this copy we call \textit{server} \footnote{It is important to call directory as \textit{server}, because default startup script supposes such name.}. All steps we demonstrate in the listing \ref{lst:solrInstallation}.
 
 \begin{listing}[H]
 \caption{Solr Installation}
 \label{lst:solrInstallation}
 \begin{bashcode}
 unzip solr-X.X.X.zip
-mkdir -p /path/to/project/directory
+cd $SOLR_HOME
 # copying example directory
-cp -r solr-X.X.X/example /path/to/project/directory
-# copying contrib and dist directories
-cp -r solr-X.X.X/contrib /path/to/project/directory/example
-cp -r solr-X.X.X/dist /path/to/project/directory/example
-cd /path/to/project/directory
-# renaming example to solr
-mv example solr
+cp -r example server
 \end{bashcode}
 \end{listing}
 
-Now when Solr is successfully installed, we have to create and configure a new solr core. The solr cores are located in the directory called \textbf{solr}. In this directory it already exists a pre created default core with the name \textbf{collection1}. We can simply rename this core. After the renaming, we need to specify its properties in the \textbf{core.properties} file. We can just simply replace all file by the settings in the listing \ref{lst:coreProp}.
+Now when Solr is successfully installed, we have to create and configure a new solr core. The solr cores are located in the directory called \textbf{solr}. In this directory it already exists a pre created default core with the name \textbf{collection1}. We can simply rename this core. After the renaming, we need to specify its properties in the \textbf{core.properties} file, where we set name to \textit{liresolr}.
 
 \begin{listing}[H]
 \caption{Creating a new solr core.}
 \begin{bashcode}
-# You can check if your actual working directory is
-# /path/to/project/solr
-pwd
-# We change our working directory to the solr
-# directory where cores are located.
-cd solr
-# Now we can rename core with name collection1
-# to liresolr.
+cd $SOLR_HOME/server/solr
 mv collection1 liresolr
-# Again we change our working directory to the liresolr
-cd liresolr
-# Now we can edit core.properties file
-vim core.properties
+vim liresolr/core.properties
 \end{bashcode}
-\end{listing}
-
-\begin{listing}[H]
-\caption{core.properties}
-\label{lst:coreProp}
-\begin{propertiescode}
-name=identity
-config=solrconfig.xml
-schema=schema.xml
-dataDir=data
-\end{propertiescode}
-\end{listing}
-
-We mentioned that we have to change class-path for the \textbf{contrib} and \textbf{dist} directories. We can do it in the \textbf{solrconfig.xml}, which is located in the \textit{/path/to/project/solr/solr/[core]/conf/solrconfig.xml}. So we replace following lines.
-
-\begin{listing}[H]
-\caption{Original solrconfig.xml}
-\begin{xmlcode}
-<lib dir="../../../contrib/extraction/lib" regex=".*\.jar" />
-<lib dir="../../../dist/" regex="solr-cell-\d.*\.jar" />
-
-<lib dir="../../../contrib/clustering/lib/" regex=".*\.jar" />
-<lib dir="../../../dist/" regex="solr-clustering-\d.*\.jar" />
-
-<lib dir="../../../contrib/langid/lib/" regex=".*\.jar" />
-<lib dir="../../../dist/" regex="solr-langid-\d.*\.jar" />
-
-<lib dir="../../../contrib/velocity/lib" regex=".*\.jar" />
-<lib dir="../../../dist/" regex="solr-velocity-\d.*\.jar" />
-\end{xmlcode}
-\end{listing}
-
-\begin{listing}[H]
-\caption{Changed solrconfig.xml}
-\begin{xmlcode}
-<lib dir="../../contrib/extraction/lib" regex=".*\.jar" />
-<lib dir="../../dist/" regex="solr-cell-\d.*\.jar" />
-
-<lib dir="../../contrib/clustering/lib/" regex=".*\.jar" />
-<lib dir="../../dist/" regex="solr-clustering-\d.*\.jar" />
-
-<lib dir="../../contrib/langid/lib/" regex=".*\.jar" />
-<lib dir="../../dist/" regex="solr-langid-\d.*\.jar" />
-
-<lib dir="../../contrib/velocity/lib" regex=".*\.jar" />
-<lib dir="../../dist/" regex="solr-velocity-\d.*\.jar" />
-\end{xmlcode}
 \end{listing}
 
 Now we can run the jetty server and we can see a solr admin page on the \textit{\url{http://localhost:8983/solr/}}.
@@ -137,8 +74,7 @@ Now we can run the jetty server and we can see a solr admin page on the \textit{
 \begin{listing}[H]
 \caption{Running the Solr server.}
 \begin{bashcode}
-cd /path/to/project/solr
-java -jar start.jar
+$SOLR_HOME/bin/solr start
 \end{bashcode}
 \end{listing}
 

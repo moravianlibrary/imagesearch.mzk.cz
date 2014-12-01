@@ -8,23 +8,21 @@ import java.util.Properties;
 
 public class QueryImageUtils {
 
-	public static BufferedImage resizeQueryImage(BufferedImage image, Properties properties) {
-		int length = Integer.parseInt(properties.getProperty("resizeQueryImage"));
-		
-		if (length == 0) {
-			return image;
-		}
-		
-		int imgWidth = image.getWidth();
-		int imgHeight = image.getHeight();
-		int width;
-		int height;
-		
-		double ratio = imgWidth < imgHeight? 1.0 * length / imgWidth : 1.0 * length / imgHeight;
-		width = (int) (imgWidth * ratio);
-		height = (int) (imgHeight * ratio);
-		
-		System.out.println("Resize image to: " + width + " x " + height);
+    public static BufferedImage resizeQueryImage(BufferedImage image, Properties properties) {
+        int length = Integer.parseInt(properties.getProperty("resizeQueryImage"));
+
+        if (length == 0) {
+                return image;
+        }
+
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
+        int width;
+        int height;
+
+        double ratio = imgWidth < imgHeight? 1.0 * length / imgWidth : 1.0 * length / imgHeight;
+        width = (int) (imgWidth * ratio);
+        height = (int) (imgHeight * ratio);
 		
     	BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
     	Graphics2D g = resizedImage.createGraphics();
