@@ -14,7 +14,7 @@ RUN apt-get -y update && \
 RUN wget --no-verbose http://apache.miloslavbrada.cz/lucene/solr/4.10.2/solr-4.10.2.tgz -O /tmp/solr.tgz
 
 # creates liresolr user
-RUN adduser --disabled-password --gecos "" liresolr
+RUN adduser --disabled-password --gecos "" --uid 8000 liresolr
 USER liresolr
 
 # unpack solr

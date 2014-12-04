@@ -9,18 +9,22 @@ import java.util.Properties;
 public class QueryImageUtils {
 
     public static BufferedImage resizeQueryImage(BufferedImage image, Properties properties) {
-        int length = Integer.parseInt(properties.getProperty("resizeQueryImage"));
-
-        if (length == 0) {
-                return image;
-        }
-
-        int imgWidth = image.getWidth();
-        int imgHeight = image.getHeight();
         int width;
         int height;
+        double ratio;
+        int lengthShorter = Integer.parseInt(properties.getProperty("resizeQueryImageShorterSide"));
+        int lengthLonger = Integer.parseInt(properties.getProperty("resizeQueryImageLongerSide"));
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
 
-        double ratio = imgWidth < imgHeight? 1.0 * length / imgWidth : 1.0 * length / imgHeight;
+        if (lengthShorter > 0) {
+            ratio = computeRatioShorterSide(image, lengthShorter);
+        } else if (lengthLonger > 0) {
+            ratio = computeRatioLongerSide(image, lengthLonger);
+        } else {
+            return image;
+        }
+        
         width = (int) (imgWidth * ratio);
         height = (int) (imgHeight * ratio);
 		
@@ -33,6 +37,21 @@ public class QueryImageUtils {
     	g.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
     	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
     	return resizedImage;
+    }
+    
+    private static double computeRatioShorterSide(BufferedImage image, int length) {
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
+
+        return imgWidth < imgHeight? 1.0 * length / imgWidth : 1.0 * length / imgHeight;
+        
+    }
+    
+    private static double computeRatioLongerSide(BufferedImage image, int length) {
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
+
+        return imgWidth > imgHeight? 1.0 * length / imgWidth : 1.0 * length / imgHeight;
     }
 	
 }

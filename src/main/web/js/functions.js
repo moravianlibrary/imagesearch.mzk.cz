@@ -4,14 +4,14 @@ function searchIdentity(url) {
     $('.noMatch').remove();
     $("#perfIdentity").html("Please stand by .... <img src=\"img/loader-light.gif\"/>");
     // get all the new data from the server ...
-    serverUrl = "http://localhost:8983/solr/liresolr/lireId?url="+url;
+    serverUrl = "/solr/liresolr/lireId?url="+url;
     console.log(serverUrl);
     $.getJSON( serverUrl, function( myResult ) {
         $("#perfIdentity").html("Index search time: " + myResult.responseHeader.QTime + " ms");
         console.log(myResult);
-        
+
         var identity = myResult.identity;
-        
+
         if (identity == true) {
             var id = myResult.doc.id;
             var img = $( "<div class=\"imgCont\"><img class=\"lireimg\" src=\"data/"+id+"\" />" + "d=" + myResult.doc.d+"<br/>");
@@ -27,12 +27,12 @@ function searchSimiliar(url) {
     $('.imgCont').remove();
     $("#perfSimilar").html("Please stand by .... <img src=\"img/loader-light.gif\"/>");
     // get all the new data from the server ...
-    serverUrl = "http://localhost:8983/solr/liresolr/lireSim?url="+url;
+    serverUrl = "/solr/liresolr/lireSim?url="+url;
     console.log(serverUrl);
     $.getJSON( serverUrl, function( myResult ) {
         $("#perfSimilar").html("Index search time: " + myResult.responseHeader.QTime + " ms");
         console.log(myResult);
-        
+
         var last = $("#similiar");
         for (var i =0; i< myResult.docs.length; i++) {
             myID = myResult.docs[i].id.toString();
@@ -42,6 +42,6 @@ function searchSimiliar(url) {
             recent.insertAfter(last);
             last=recent;
         }
-    
+
     });
 }
