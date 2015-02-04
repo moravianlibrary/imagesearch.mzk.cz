@@ -30,7 +30,11 @@ RUN mkdir /home/liresolr/solr-server/server/solr/liresolr/lib
 ADD solrcore/lire.jar /home/liresolr/solr-server/server/solr/liresolr/lib/lire.jar
 ADD solrcore/JOpenSurf.jar /home/liresolr/solr-server/server/solr/liresolr/lib/JOpenSurf.jar
 ADD solrcore/liresolr-handlers.jar /home/liresolr/solr-server/server/solr/liresolr/lib/liresolr-handlers.jar
-#ADD solrcore/lib/* /home/liresolr/solr-server/server/solr/liresolr/lib/
+USER root
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/lire.jar
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/JOpenSurf.jar
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/liresolr-handlers.jar
+USER liresolr
 
 RUN xmlstarlet ed -L \
       -s /config -t elem -n requestHandlerTMP -v "" \
@@ -68,25 +72,36 @@ RUN xmlstarlet ed -L \
 RUN rm /home/liresolr/solr-server/server/solr/liresolr/conf/schema.xml
 ADD solrcore/schema.xml /home/liresolr/solr-server/server/solr/liresolr/conf/schema.xml
 ADD solrcore/liresolr.properties /home/liresolr/solr-server/server/solr/liresolr/conf/liresolr.properties
+USER root
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/conf/schema.xml
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/conf/liresolr.properties
+USER liresolr
 
 # import
 RUN mkdir /home/liresolr/import
 ADD indexer/indexer.jar /home/liresolr/import/indexer.jar
 ADD indexer/indexer.properties /home/liresolr/import/indexer.properties
 ADD indexer/create_index.sh /home/liresolr/import/create_index.sh
-
 USER root
+RUN chown liresolr:liresolr /home/liresolr/import/indexer.jar
+RUN chown liresolr:liresolr /home/liresolr/import/indexer.properties
+RUN chown liresolr:liresolr /home/liresolr/import/create_index.sh
 RUN chmod a+x /home/liresolr/import/create_index.sh
-
 USER liresolr
 
 # web application
 ADD web/web.war /home/liresolr/solr-server/server/webapps/web.war
 ADD web/web-context.xml /home/liresolr/solr-server/server/contexts/web-context.xml
 ADD web/data-context.xml /home/liresolr/solr-server/server/contexts/data-context.xml
-
 USER root
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/webapps/web.war
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/contexts/web-context.xml
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/contexts/data-context.xml
+USER liresolr
+
 ADD init.sh /init.sh
+USER root
 RUN chmod ugo+x /init.sh
+USER liresolr
 
 ENTRYPOINT "/init.sh"
