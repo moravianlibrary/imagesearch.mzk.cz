@@ -12,7 +12,7 @@ build:
 	cd docker; ./build.sh ${DOCKER_TARGET}
 
 clean:
-	docker/*/solrcore/lire.jar
-	docker/*/solrcore/JOpenSurf.jar
-	docker/*/solrcore/liresolr-handlers.jar
-	docker/*/web/web.war
+	rm -f docker/*/solrcore/lire.jar
+	rm -f docker/*/solrcore/JOpenSurf.jar
+	rm -f docker/*/solrcore/liresolr-handlers.jar
+	rm -f docker/*/web/web.war
