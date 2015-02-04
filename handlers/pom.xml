@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                        http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- The Basics -->
+    <parent>
+        <groupId>net.semanticmetadata</groupId>
+        <artifactId>liresolr-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>liresolr-handlers</artifactId>
+    <packaging>jar</packaging>
+
+    <!-- More Project Information -->
+    <name>Lire Solr Handlers</name>
+    <description>Implements Solr handlers for image retrieval.</description>
+    <url>https://github.com/moravianlibrary/liresolr</url>
+  
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>4.10.2</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>4.10.2</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-core</artifactId>
+            <version>4.10.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.semanticmetadata</groupId>
+            <artifactId>lire</artifactId>
+            <version>0.9.4-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
+</project>

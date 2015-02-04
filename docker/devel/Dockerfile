@@ -29,7 +29,7 @@ RUN echo "name=liresolr" > /home/liresolr/solr-server/server/solr/liresolr/core.
 RUN mkdir /home/liresolr/solr-server/server/solr/liresolr/lib
 ADD solrcore/lire.jar /home/liresolr/solr-server/server/solr/liresolr/lib/lire.jar
 ADD solrcore/JOpenSurf.jar /home/liresolr/solr-server/server/solr/liresolr/lib/JOpenSurf.jar
-ADD solrcore/liresolr.jar /home/liresolr/solr-server/server/solr/liresolr/lib/liresolr.jar
+ADD solrcore/liresolr-handlers.jar /home/liresolr/solr-server/server/solr/liresolr/lib/liresolr-handlers.jar
 #ADD solrcore/lib/* /home/liresolr/solr-server/server/solr/liresolr/lib/
 
 RUN xmlstarlet ed -L \

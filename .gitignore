@@ -2,3 +2,5 @@ classes
 dist
 default.mf
 /target/
+/web/target/
+/handlers/target/
