@@ -116,12 +116,67 @@
      installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
    -->
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="url" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="rights" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="provider" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="provider_link" type="string" indexed="true" stored="true" required="true" multiValued="false" />
 
    <!-- Needed for SOLR -->
    <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
    <!-- ColorLayout -->
    <field name="cl_ha" type="text_ws" indexed="true" stored="false" required="false"/>
-   <field name="cl_hi" type="binaryDV" indexed="false" stored="true" required="false"/>
+   <field name="cl_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- CEDD -->
+  <field name="cedd_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="cedd_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- AutoColorCorrelogram -->
+  <field name="acc_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="acc_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- BinaryPatternsPyramid -->
+  <field name="bpp_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="bpp_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- SimpleColorHistogram -->
+  <field name="sch_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="sch_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- EdgeHistogram -->
+  <field name="eh_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="eh_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- FCTH -->
+  <field name="fcth_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="fcth_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- Gabor -->
+  <field name="gabor_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="gabor_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- JCD -->
+  <field name="jcd_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="jcd_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- JointHistogram -->
+  <field name="jh_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="jh_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- JpegCoefficientHistogram -->
+  <field name="jch_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="jch_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- LocalBinaryPatterns -->
+  <field name="lbp_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="lbp_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- OpponentHistogram -->
+  <field name="oh_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="oh_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- PHOG -->
+  <field name="phog_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="phog_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- RotationInvariantLocalBinaryPatterns -->
+  <field name="rilb_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="rilb_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- ScalableColor -->
+  <field name="sc_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="sc_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- Tamura -->
+  <field name="tamura_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="tamura_hi" type="binary" indexed="false" stored="true" required="false"/>
+  <!-- LuminanceLayout -->
+  <field name="ll_ha" type="text_ws" indexed="true" stored="false" required="false"/>
+  <field name="ll_hi" type="binary" indexed="false" stored="true" required="false"/>
    <!-- SURF -->
    <field name="su_ha" type="text_ws" indexed="true" stored="false" required="false"/>
    <field name="su_hi" type="binary" indexed="false" stored="true" required="false" multiValued="true"/>

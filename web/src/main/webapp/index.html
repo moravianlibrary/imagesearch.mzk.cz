@@ -5,7 +5,7 @@
     <title>LIRE - Lucene Image Retrieval</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
 	<script src="js/jquery-l.js"></script>
-	<script src="js/functions.js"></script>
+	<script src="js/index.js"></script>
 </head>
 
 
@@ -16,34 +16,62 @@
 
     <p>This page is a simple demonstrator for the LIRE image search library. The images below show the query image and
         the results. Use the images to trigger a new content based search request. </p>
-	<script>
-	
-$( document ).ready(function() {
-	
-	$('#searchUrlForm').submit(function() {
-	    return false;
-	});
-	
-	$('#url_search').click(function() {
-	    var url = $('#searchUrlForm input[name=url]').val();
-	    console.log(url);
-	    searchIdentity(url);
-	    searchSimiliar(url);
-	});
-	
-});
-	</script>
-	<h1 id="identity">Identity</h1>
-	<br style="clear:both;"/>
-	<p><i id="perfIdentity">Index search time</i></p>
-	
-    <h1 id="similiar">Similar</h1>
-	<br style="clear:both;"/>
-	<p><i id="perfSimilar">Index search time</i></p>
 
+	<h1 id="results">Results</h1>
+	<br style="clear:both;"/>
+	<p><i id="perfResults">Index search time</i></p>
+	
 <p>
   <form id="searchUrlForm">
     <input type="text" name="url"/>
+    <label for="searchDescriptorSelect">Search Descriptor</label>
+    <select id="searchDescriptorSelect" name="searchDescriptor" required="required">
+        <option value="ColorLayout">Color Layout</option>
+        <option value="CEDD">CEDD</option>
+        <option value="AutoColorCorrelogram">AutoColorCorrelogram</option>
+        <option value="BinaryPatternsPyramid">BinaryPatternsPyramid</option>
+        <option value="SimpleColorHistogram">SimpleColorHistogram</option>
+        <option value="EdgeHistogram">EdgeHistogram</option>
+        <option value="FCTH">FCTH</option>
+        <option value="Gabor">Gabor</option>
+        <option value="JCD">JCD</option>
+        <option value="JointHistogram">JointHistogram</option>
+        <option value="JpegCoefficientHistogram">JpegCoefficientHistogram</option>
+        <option value="LocalBinaryPatterns">LocalBinaryPatterns</option>
+        <option value="OpponentHistogram">OpponentHistogram</option>
+        <option value="PHOG">PHOG</option>
+        <option value="RotationInvariantLocalBinaryPatterns">RotationInvariantLocalBinaryPatterns</option>
+        <option value="ScalableColor">ScalableColor</option>
+        <option value="Tamura">Tamura</option>
+        <option value="LuminanceLayout">LuminanceLayout</option>
+        <option value="Surf">Surf</option>
+    </select>
+    <label for="searchCount">Search Count</label>
+    <input type="text" name="searchCount" id="searchCount" required="required" style="width: 30px;"/>
+    <label for="rerankDescriptorSelect">Rerank Descriptor</label>
+    <select id="rerankDescriptorSelect" name="rerankDescriptor" required="required">
+        <option value="ColorLayout">Color Layout</option>
+        <option value="CEDD">CEDD</option>
+        <option value="AutoColorCorrelogram">AutoColorCorrelogram</option>
+        <option value="BinaryPatternsPyramid">BinaryPatternsPyramid</option>
+        <option value="SimpleColorHistogram">SimpleColorHistogram</option>
+        <option value="EdgeHistogram">EdgeHistogram</option>
+        <option value="FCTH">FCTH</option>
+        <option value="Gabor">Gabor</option>
+        <option value="JCD">JCD</option>
+        <option value="JointHistogram">JointHistogram</option>
+        <option value="JpegCoefficientHistogram">JpegCoefficientHistogram</option>
+        <option value="LocalBinaryPatterns">LocalBinaryPatterns</option>
+        <option value="OpponentHistogram">OpponentHistogram</option>
+        <option value="PHOG">PHOG</option>
+        <option value="RotationInvariantLocalBinaryPatterns">RotationInvariantLocalBinaryPatterns</option>
+        <option value="ScalableColor">ScalableColor</option>
+        <option value="Tamura">Tamura</option>
+        <option value="LuminanceLayout">LuminanceLayout</option>
+        <option value="Surf">Surf</option>
+    </select>
+    <label for="rerankCount">Rerank Count</label>
+    <input type="text" name="rerankCount" id="rerankCount" required="required" style="width: 30px;"/>
     <input type="button" id="url_search" value="Search"/>
   </form>
 </p>

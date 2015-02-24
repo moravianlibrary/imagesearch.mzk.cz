@@ -35,7 +35,7 @@ ADD solrcore/liresolr.jar /home/liresolr/solr-server/server/solr/liresolr/lib/li
 RUN xmlstarlet ed -L \
       -s /config -t elem -n requestHandlerTMP -v "" \
       -i /config/requestHandlerTMP -t attr -n name -v "/lireId" \
-      -i /config/requestHandlerTMP -t attr -n class -v "net.semanticmetadata.lire.solr.requesthandler.IdentityRequestHandler" \
+      -i /config/requestHandlerTMP -t attr -n class -v "net.semanticmetadata.lire.solr.handler.IdentityRequestHandler" \
       -s /config/requestHandlerTMP -t elem -n lst -v "" \
       -i /config/requestHandlerTMP/lst -t attr -n name -v "defaults" \
       -s /config/requestHandlerTMP/lst -t elem -n str1 -v "explicit" \
@@ -50,7 +50,7 @@ RUN xmlstarlet ed -L \
       -r /config/requestHandlerTMP -v requestHandler \
       -s /config -t elem -n requestHandlerTMP -v "" \
       -i /config/requestHandlerTMP -t attr -n name -v "/lireSim" \
-      -i /config/requestHandlerTMP -t attr -n class -v "net.semanticmetadata.lire.solr.requesthandler.SimilarRequestHandler" \
+      -i /config/requestHandlerTMP -t attr -n class -v "net.semanticmetadata.lire.solr.handler.SimilarRequestHandler" \
       -s /config/requestHandlerTMP -t elem -n lst -v "" \
       -i /config/requestHandlerTMP/lst -t attr -n name -v "defaults" \
       -s /config/requestHandlerTMP/lst -t elem -n str1 -v "explicit" \

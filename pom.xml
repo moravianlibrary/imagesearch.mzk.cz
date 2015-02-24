@@ -13,6 +13,7 @@
   <modules>
       <module>handlers</module>
       <module>web</module>
+      <module>importer</module>
   </modules>
   
 </project>

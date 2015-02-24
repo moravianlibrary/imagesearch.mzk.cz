@@ -25,6 +25,9 @@ build:
 run-internal:
 	cd docker; ./run.sh ${DOCKER_TARGET}
 
+import:
+	./importer/import.sh
+
 clean:
 	rm -f docker/*/solrcore/lire.jar
 	rm -f docker/*/solrcore/JOpenSurf.jar

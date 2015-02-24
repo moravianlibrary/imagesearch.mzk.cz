@@ -115,7 +115,7 @@ Then add the new request handlers has to be registered in the solrconfig.xml fil
         </lst>
      </requestHandler>
      
-     <requestHandler name="/lireId" class="net.semanticmetadata.lire.solr.requesthandler.IdentityRequestHandler">
+     <requestHandler name="/lireId" class="net.semanticmetadata.lire.solr.handler.IdentityRequestHandler">
         <lst name="defaults">
           <str name="echoParams">explicit</str>
           <str name="wt">json</str>
@@ -123,7 +123,7 @@ Then add the new request handlers has to be registered in the solrconfig.xml fil
         </lst>
      </requestHandler>
 
-     <requestHandler name="/lireSim" class="net.semanticmetadata.lire.solr.requesthandler.SimilarRequestHandler">
+     <requestHandler name="/lireSim" class="net.semanticmetadata.lire.solr.handler.SimilarRequestHandler">
         <lst name="defaults">
           <str name="echoParams">explicit</str>
           <str name="wt">json</str>

@@ -4,3 +4,7 @@ default.mf
 /target/
 /web/target/
 /handlers/target/
+.idea
+*.iml
+images/
+*/target/

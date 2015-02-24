@@ -1,8 +1,7 @@
 package net.semanticmetadata.lire.solr;
 
-import org.apache.lucene.index.IndexReader;
-
 import net.semanticmetadata.lire.imageanalysis.bovw.SurfFeatureHistogramBuilder;
+import org.apache.lucene.index.IndexReader;
 
 public class SolrSurfFeatureHistogramBuilder extends SurfFeatureHistogramBuilder {
 

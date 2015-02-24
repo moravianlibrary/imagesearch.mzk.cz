@@ -30,16 +30,18 @@ RUN mkdir /home/liresolr/solr-server/server/solr/liresolr/lib
 ADD solrcore/lire.jar /home/liresolr/solr-server/server/solr/liresolr/lib/lire.jar
 ADD solrcore/JOpenSurf.jar /home/liresolr/solr-server/server/solr/liresolr/lib/JOpenSurf.jar
 ADD solrcore/liresolr-handlers.jar /home/liresolr/solr-server/server/solr/liresolr/lib/liresolr-handlers.jar
+ADD solrcore/json-simple-1.1.1.jar /home/liresolr/solr-server/server/solr/liresolr/lib/json-simple-1.1.1.jar
 USER root
 RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/lire.jar
 RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/JOpenSurf.jar
 RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/liresolr-handlers.jar
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/json-simple-1.1.1.jar
 USER liresolr
 
 RUN xmlstarlet ed -L \
       -s /config -t elem -n requestHandlerTMP -v "" \
-      -i /config/requestHandlerTMP -t attr -n name -v "/lireId" \
-      -i /config/requestHandlerTMP -t attr -n class -v "net.semanticmetadata.lire.solr.requesthandler.IdentityRequestHandler" \
+      -i /config/requestHandlerTMP -t attr -n name -v "/lireSim" \
+      -i /config/requestHandlerTMP -t attr -n class -v "net.semanticmetadata.lire.solr.handler.SimilarRequestHandler" \
       -s /config/requestHandlerTMP -t elem -n lst -v "" \
       -i /config/requestHandlerTMP/lst -t attr -n name -v "defaults" \
       -s /config/requestHandlerTMP/lst -t elem -n str1 -v "explicit" \
@@ -53,19 +55,16 @@ RUN xmlstarlet ed -L \
       -r /config/requestHandlerTMP/lst/str3 -v str \
       -r /config/requestHandlerTMP -v requestHandler \
       -s /config -t elem -n requestHandlerTMP -v "" \
-      -i /config/requestHandlerTMP -t attr -n name -v "/lireSim" \
-      -i /config/requestHandlerTMP -t attr -n class -v "net.semanticmetadata.lire.solr.requesthandler.SimilarRequestHandler" \
-      -s /config/requestHandlerTMP -t elem -n lst -v "" \
-      -i /config/requestHandlerTMP/lst -t attr -n name -v "defaults" \
-      -s /config/requestHandlerTMP/lst -t elem -n str1 -v "explicit" \
-      -s /config/requestHandlerTMP/lst -t elem -n str2 -v "json" \
-      -s /config/requestHandlerTMP/lst -t elem -n str3 -v "true" \
-      -i /config/requestHandlerTMP/lst/str1 -t attr -n name -v "echoParams" \
-      -i /config/requestHandlerTMP/lst/str2 -t attr -n name -v "wt" \
-      -i /config/requestHandlerTMP/lst/str3 -t attr -n name -v "indent" \
-      -r /config/requestHandlerTMP/lst/str1 -v str \
-      -r /config/requestHandlerTMP/lst/str2 -v str \
-      -r /config/requestHandlerTMP/lst/str3 -v str \
+      -i /config/requestHandlerTMP -t attr -n name -v "/indexImage" \
+      -i /config/requestHandlerTMP -t attr -n class -v "net.semanticmetadata.lire.solr.handler.UpdateRequestHandler" \
+      -r /config/requestHandlerTMP -v requestHandler \
+      -s /config -t elem -n requestHandlerTMP -v "" \
+      -i /config/requestHandlerTMP -t attr -n name -v "/createClusters" \
+      -i /config/requestHandlerTMP -t attr -n class -v "net.semanticmetadata.lire.solr.handler.CreateClustersHandler" \
+      -r /config/requestHandlerTMP -v requestHandler \
+      -s /config -t elem -n requestHandlerTMP -v "" \
+      -i /config/requestHandlerTMP -t attr -n name -v "/reindexBOVW" \
+      -i /config/requestHandlerTMP -t attr -n class -v "net.semanticmetadata.lire.solr.handler.ReIndexBoVWRequestHandler" \
       -r /config/requestHandlerTMP -v requestHandler \
       /home/liresolr/solr-server/server/solr/liresolr/conf/solrconfig.xml
 

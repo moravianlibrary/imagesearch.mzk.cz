@@ -151,12 +151,12 @@ Now when we have LIRE handlers in the class-path we register them in the
 [H]
 
 \<config\> \<requestHandler name=“/lireId”
-class=“net.semanticmetadata.lire.solr.requesthandler.
+class=“net.semanticmetadata.lire.solr.handler.
 IdentityRequestHandler”\> \<lst name=“defaults”\> \<str
 name=“echoParams”\>explicit\</str\> \<str name=“wt”\>json\</str\> \<str
 name=“indent”\>true\</str\> \</lst\> \</requestHandler\>
 \<requestHandler name=“/lireSim”
-class=“net.semanticmetadata.lire.solr.requesthandler.
+class=“net.semanticmetadata.lire.solr.handler.
 SimilarRequestHandler”\> \<lst name=“defaults”\> \<str
 name=“echoParams”\>explicit\</str\> \<str name=“wt”\>json\</str\> \<str
 name=“indent”\>true\</str\> \</lst\> \</requestHandler\> \</config\>
