@@ -180,6 +180,9 @@
    <!-- SURF -->
    <field name="su_ha" type="text_ws" indexed="true" stored="false" required="false"/>
    <field name="su_hi" type="binary" indexed="false" stored="true" required="false" multiValued="true"/>
+    <!-- SIFT -->
+   <field name="si_ha" type="text_ws" indexed="true" stored="true" required="false"/>
+   <field name="si_hi" type="binary" indexed="false" stored="true" required="false" multiValued="true"/>
 
 
  <!-- Field to use to determine and enforce document uniqueness.

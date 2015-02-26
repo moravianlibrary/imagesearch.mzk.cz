@@ -18,6 +18,7 @@ build:
 	mvn clean package
 	cp handlers/lib/lire.jar docker/${DOCKER_TARGET}/solrcore
 	cp handlers/lib/JOpenSurf.jar docker/${DOCKER_TARGET}/solrcore
+	cp handlers/lib/commons-math3-3.2.jar docker/${DOCKER_TARGET}/solrcore
 	cp handlers/target/liresolr-handlers-*.jar docker/${DOCKER_TARGET}/solrcore/liresolr-handlers.jar
 	cp web/target/liresolr-webapp-*.war docker/${DOCKER_TARGET}/web/web.war
 	cd docker; ./build.sh ${DOCKER_TARGET}

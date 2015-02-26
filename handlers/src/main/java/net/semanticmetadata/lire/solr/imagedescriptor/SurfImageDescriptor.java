@@ -48,27 +48,28 @@ public class SurfImageDescriptor implements ImageDescriptor, BoVWIndexer {
 
     public static org.slf4j.Logger log = LoggerFactory.getLogger(SurfImageDescriptor.class);
 
-    private SurfFeature featureInstance = new SurfFeature();
-
-    protected Cluster[] clusters = null;
-    
-    protected QueryParser qp;
-
-    protected int imageShorterSide = 0;
-    
-    protected int imageLongerSide = 0;
-    
-    protected int numDocsForVocabulary;
-    
-    protected int numClusters;
-    
-    protected String clusterFile;
-
     public static final String HASH_FIELD_NAME = "su_ha";
 
     public static final String HISTOGRAM_FIELD_NAME = "su_hi";
 
-    public static final String FEATURE_FIELD_NAME = "featureClass";
+    public static final String FEATURE_TYPE = "surfFeature";
+
+    protected SurfFeature featureInstance = new SurfFeature();
+
+    protected Cluster[] clusters = null;
+
+    protected QueryParser qp;
+
+    protected int imageShorterSide = 0;
+
+    protected int imageLongerSide = 0;
+
+    protected int numDocsForVocabulary;
+
+    protected int numClusters;
+
+    protected String clusterFile;
+
 
     public SurfImageDescriptor() {
         qp = new QueryParser(HASH_FIELD_NAME, new WhitespaceAnalyzer());
@@ -112,6 +113,7 @@ public class SurfImageDescriptor implements ImageDescriptor, BoVWIndexer {
             if (hasClusters()) {
                 String visualWords = createVisualWords(doc);
                 SolrInputField hashField = new SolrInputField(HASH_FIELD_NAME);
+                hashField.setValue(visualWords, 1.0F);
                 result.put(HASH_FIELD_NAME, hashField);
             } else {
                 log.warn("Cluster file does not exist.");
@@ -144,6 +146,7 @@ public class SurfImageDescriptor implements ImageDescriptor, BoVWIndexer {
             SearchResult result = new SearchResult();
             result.setOrigin(image);
             result.setFeature(doc);
+            result.setFeatureType(FEATURE_TYPE);
             result.setScoreDocs(docs.scoreDocs);
             return result;
         } catch (ParseException ex) {
@@ -155,11 +158,8 @@ public class SurfImageDescriptor implements ImageDescriptor, BoVWIndexer {
     @Override
     public RerankResult rerank(SolrIndexSearcher searcher, SearchResult searchResult, int count) throws IOException {
         Document queryDoc = null;
-        if (searchResult.getFeature() instanceof Document) {
-            Document doc = (Document) searchResult.getFeature();
-            if (featureInstance.getFeatureName().equals(FEATURE_FIELD_NAME)) {
-                queryDoc = doc;
-            }
+        if (FEATURE_TYPE.equals(searchResult.getFeatureType())) {
+            queryDoc = (Document) searchResult.getFeature();
         }
         if (queryDoc == null) {
             queryDoc = createHistogram(searchResult.getOrigin());
@@ -239,7 +239,6 @@ public class SurfImageDescriptor implements ImageDescriptor, BoVWIndexer {
         Surf surf = new Surf(resizeQueryImage(img));
         List<SURFInterestPoint> interestPoints = surf.getFreeOrientedInterestPoints();
         Document result = new Document();
-        result.add(new StoredField(FEATURE_FIELD_NAME, featureInstance.getFeatureName()));
 
         for (SURFInterestPoint sip : interestPoints) {
             SurfFeature feature = new SurfFeature(sip);

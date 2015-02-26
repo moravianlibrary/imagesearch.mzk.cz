@@ -19,6 +19,8 @@ public class SearchResult {
     private BufferedImage origin;
     
     private Object feature;
+
+    private String featureType;
     
     private ScoreDoc[] scoreDocs;
 
@@ -36,6 +38,14 @@ public class SearchResult {
 
     public void setFeature(Object feature) {
         this.feature = feature;
+    }
+
+    public String getFeatureType() {
+        return featureType;
+    }
+
+    public void setFeatureType(String featureType) {
+        this.featureType = featureType;
     }
 
     public ScoreDoc[] getScoreDocs() {

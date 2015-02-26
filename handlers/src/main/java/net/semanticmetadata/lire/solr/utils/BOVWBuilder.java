@@ -200,13 +200,18 @@ public class BOVWBuilder {
         double distance = clusters[0].getDistance(f);
         double tmp;
         int result = 0;
+        log.warn("Start");
         for (int i = 1; i < clusters.length; i++) {
             tmp = clusters[i].getDistance(f);
+            log.warn("tmp: " + tmp);
+            log.warn("i: " + i);
             if (tmp < distance) {
                 distance = tmp;
                 result = i;
             }
         }
+        log.warn("Distance: " + distance);
+        log.warn("Result: " + result);
         return result;
     }
 

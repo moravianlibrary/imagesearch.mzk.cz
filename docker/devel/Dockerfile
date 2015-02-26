@@ -25,19 +25,6 @@ RUN cp -r /home/liresolr/solr-server/example /home/liresolr/solr-server/server
 RUN cp -r /home/liresolr/solr-server/server/solr/collection1 /home/liresolr/solr-server/server/solr/liresolr
 RUN echo "name=liresolr" > /home/liresolr/solr-server/server/solr/liresolr/core.properties
 
-# add libraries
-RUN mkdir /home/liresolr/solr-server/server/solr/liresolr/lib
-ADD solrcore/lire.jar /home/liresolr/solr-server/server/solr/liresolr/lib/lire.jar
-ADD solrcore/JOpenSurf.jar /home/liresolr/solr-server/server/solr/liresolr/lib/JOpenSurf.jar
-ADD solrcore/liresolr-handlers.jar /home/liresolr/solr-server/server/solr/liresolr/lib/liresolr-handlers.jar
-ADD solrcore/json-simple-1.1.1.jar /home/liresolr/solr-server/server/solr/liresolr/lib/json-simple-1.1.1.jar
-USER root
-RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/lire.jar
-RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/JOpenSurf.jar
-RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/liresolr-handlers.jar
-RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/json-simple-1.1.1.jar
-USER liresolr
-
 RUN xmlstarlet ed -L \
       -s /config -t elem -n requestHandlerTMP -v "" \
       -i /config/requestHandlerTMP -t attr -n name -v "/lireSim" \
@@ -86,6 +73,20 @@ RUN chown liresolr:liresolr /home/liresolr/import/indexer.jar
 RUN chown liresolr:liresolr /home/liresolr/import/indexer.properties
 RUN chown liresolr:liresolr /home/liresolr/import/create_index.sh
 RUN chmod a+x /home/liresolr/import/create_index.sh
+USER liresolr
+
+# add libraries
+RUN mkdir /home/liresolr/solr-server/server/solr/liresolr/lib
+ADD solrcore/lire.jar /home/liresolr/solr-server/server/solr/liresolr/lib/lire.jar
+ADD solrcore/JOpenSurf.jar /home/liresolr/solr-server/server/solr/liresolr/lib/JOpenSurf.jar
+ADD solrcore/commons-math3-3.2.jar /home/liresolr/solr-server/server/solr/liresolr/lib/commons-math3-3.2.jar
+ADD solrcore/liresolr-handlers.jar /home/liresolr/solr-server/server/solr/liresolr/lib/liresolr-handlers.jar
+ADD solrcore/json-simple-1.1.1.jar /home/liresolr/solr-server/server/solr/liresolr/lib/json-simple-1.1.1.jar
+USER root
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/lire.jar
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/JOpenSurf.jar
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/liresolr-handlers.jar
+RUN chown liresolr:liresolr /home/liresolr/solr-server/server/solr/liresolr/lib/json-simple-1.1.1.jar
 USER liresolr
 
 # web application

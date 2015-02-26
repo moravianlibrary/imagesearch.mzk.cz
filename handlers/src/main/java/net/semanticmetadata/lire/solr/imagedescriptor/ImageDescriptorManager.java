@@ -37,28 +37,30 @@ public final class ImageDescriptorManager {
     private ImageDescriptorManager() {
         engines = new HashMap<String, ImageDescriptor>();
         availImageDescriptors = new ArrayList<String>();
-        availImageDescriptors.add("ColorLayout");
-        availImageDescriptors.add("CEDD");
-        availImageDescriptors.add("AutoColorCorrelogram");
-        availImageDescriptors.add("BinaryPatternsPyramid");
-        availImageDescriptors.add("SimpleColorHistogram");
-        availImageDescriptors.add("EdgeHistogram");
-        availImageDescriptors.add("FCTH");
-        availImageDescriptors.add("Gabor");
-        availImageDescriptors.add("JCD");
-        availImageDescriptors.add("JointHistogram");
-        availImageDescriptors.add("JpegCoefficientHistogram");
-        availImageDescriptors.add("LocalBinaryPatterns");
-        availImageDescriptors.add("LuminanceLayout");
-        availImageDescriptors.add("OpponentHistogram");
-        availImageDescriptors.add("PHOG");
-        availImageDescriptors.add("RotationInvariantLocalBinaryPatterns");
-        availImageDescriptors.add("ScalableColor");
-        availImageDescriptors.add("Tamura");
-        availImageDescriptors.add("LuminanceLayout");
-        availImageDescriptors.add("Surf");
+//        availImageDescriptors.add("ColorLayout");
+//        availImageDescriptors.add("CEDD");
+//        availImageDescriptors.add("AutoColorCorrelogram");
+//        availImageDescriptors.add("BinaryPatternsPyramid");
+//        availImageDescriptors.add("SimpleColorHistogram");
+//        availImageDescriptors.add("EdgeHistogram");
+//        availImageDescriptors.add("FCTH");
+//        availImageDescriptors.add("Gabor");
+//        availImageDescriptors.add("JCD");
+//        availImageDescriptors.add("JointHistogram");
+//        availImageDescriptors.add("JpegCoefficientHistogram");
+//        availImageDescriptors.add("LocalBinaryPatterns");
+//        availImageDescriptors.add("LuminanceLayout");
+//        availImageDescriptors.add("OpponentHistogram");
+//        availImageDescriptors.add("PHOG");
+//        availImageDescriptors.add("RotationInvariantLocalBinaryPatterns");
+//        availImageDescriptors.add("ScalableColor");
+//        availImageDescriptors.add("Tamura");
+//        availImageDescriptors.add("LuminanceLayout");
+//        availImageDescriptors.add("Surf");
+        availImageDescriptors.add("Sift");
         availBoVWIndexers = new ArrayList<String>();
-        availBoVWIndexers.add("Surf");
+//        availBoVWIndexers.add("Surf");
+        availBoVWIndexers.add("Sift");
     }
 
 
@@ -154,6 +156,10 @@ public final class ImageDescriptorManager {
                 return engine;
             } else if ("Surf".equals(name)) {
                 ImageDescriptor engine = getSurfEngine();
+                engines.put(name, engine);
+                return engine;
+            } else if ("Sift".equals(name)) {
+                ImageDescriptor engine = getSiftEngine();
                 engines.put(name, engine);
                 return engine;
             } else {
@@ -406,11 +412,22 @@ public final class ImageDescriptorManager {
     private ImageDescriptor getSurfEngine() {
         Properties props = PropertiesUtils.getProperties(corePath);
         SurfImageDescriptor engine = new SurfImageDescriptor();
-        engine.setImageLongerSide(Integer.parseInt(props.getProperty("surfImageLongerSide", "0")));
-        engine.setImageShorterSide(Integer.parseInt(props.getProperty("surfImageShorterSide", "0")));
+        engine.setImageLongerSide(Integer.parseInt(props.getProperty("imageLongerSide", "0")));
+        engine.setImageShorterSide(Integer.parseInt(props.getProperty("imageShorterSide", "0")));
         engine.setNumClusters(Integer.parseInt(props.getProperty("surfNumClusters", "1000")));
         engine.setNumDocsForVocabulary(Integer.parseInt(props.getProperty("surfNumDocsForVocabulary", "800")));
         engine.setClusterFile(corePath + "/" + props.getProperty("surfClustersFilePath"));
+        return engine;
+    }
+
+    private ImageDescriptor getSiftEngine() {
+        Properties props = PropertiesUtils.getProperties(corePath);
+        SiftImageDescriptor engine = new SiftImageDescriptor();
+        engine.setImageLongerSide(Integer.parseInt(props.getProperty("imageLongerSide", "0")));
+        engine.setImageShorterSide(Integer.parseInt(props.getProperty("imageShorterSide", "0")));
+        engine.setNumClusters(Integer.parseInt(props.getProperty("siftNumClusters", "1000")));
+        engine.setNumDocsForVocabulary(Integer.parseInt(props.getProperty("siftNumDocsForVocabulary", "800")));
+        engine.setClusterFile(corePath + "/" + props.getProperty("siftClustersFilePath"));
         return engine;
     }
     
