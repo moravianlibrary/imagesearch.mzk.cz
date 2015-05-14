@@ -1,5 +1,7 @@
 package net.semanticmetadata.importer;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -24,8 +26,8 @@ class Main {
             System.exit(1);
         }
         List<String> images = new ArrayList<String>();
-        for (File file : imageDir.listFiles()) {
-            images.add(file.getName());
+        for (File file : FileUtils.listFiles(imageDir, FileFilterUtils.trueFileFilter(), FileFilterUtils.trueFileFilter())) {
+            images.add(imageDir.toURI().relativize(file.toURI()).getPath());
         }
         importImages(images, url);
     }

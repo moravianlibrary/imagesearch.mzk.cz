@@ -37,30 +37,30 @@ public final class ImageDescriptorManager {
     private ImageDescriptorManager() {
         engines = new HashMap<String, ImageDescriptor>();
         availImageDescriptors = new ArrayList<String>();
-//        availImageDescriptors.add("ColorLayout");
-//        availImageDescriptors.add("CEDD");
-//        availImageDescriptors.add("AutoColorCorrelogram");
-//        availImageDescriptors.add("BinaryPatternsPyramid");
-//        availImageDescriptors.add("SimpleColorHistogram");
-//        availImageDescriptors.add("EdgeHistogram");
-//        availImageDescriptors.add("FCTH");
-//        availImageDescriptors.add("Gabor");
-//        availImageDescriptors.add("JCD");
-//        availImageDescriptors.add("JointHistogram");
-//        availImageDescriptors.add("JpegCoefficientHistogram");
-//        availImageDescriptors.add("LocalBinaryPatterns");
-//        availImageDescriptors.add("LuminanceLayout");
-//        availImageDescriptors.add("OpponentHistogram");
-//        availImageDescriptors.add("PHOG");
-//        availImageDescriptors.add("RotationInvariantLocalBinaryPatterns");
-//        availImageDescriptors.add("ScalableColor");
-//        availImageDescriptors.add("Tamura");
-//        availImageDescriptors.add("LuminanceLayout");
-//        availImageDescriptors.add("Surf");
-        availImageDescriptors.add("Sift");
+        availImageDescriptors.add("ColorLayout");
+        availImageDescriptors.add("CEDD");
+        availImageDescriptors.add("AutoColorCorrelogram");
+        availImageDescriptors.add("BinaryPatternsPyramid");
+        availImageDescriptors.add("SimpleColorHistogram");
+        availImageDescriptors.add("EdgeHistogram");
+        availImageDescriptors.add("FCTH");
+        availImageDescriptors.add("Gabor");
+        availImageDescriptors.add("JCD");
+        availImageDescriptors.add("JointHistogram");
+        availImageDescriptors.add("JpegCoefficientHistogram");
+        availImageDescriptors.add("LocalBinaryPatterns");
+        availImageDescriptors.add("LuminanceLayout");
+        availImageDescriptors.add("OpponentHistogram");
+        availImageDescriptors.add("PHOG");
+        availImageDescriptors.add("RotationInvariantLocalBinaryPatterns");
+        availImageDescriptors.add("ScalableColor");
+        availImageDescriptors.add("Tamura");
+        availImageDescriptors.add("LuminanceLayout");
+        availImageDescriptors.add("Surf");
+//        availImageDescriptors.add("Sift");
         availBoVWIndexers = new ArrayList<String>();
-//        availBoVWIndexers.add("Surf");
-        availBoVWIndexers.add("Sift");
+        availBoVWIndexers.add("Surf");
+//        availBoVWIndexers.add("Sift");
     }
 
 

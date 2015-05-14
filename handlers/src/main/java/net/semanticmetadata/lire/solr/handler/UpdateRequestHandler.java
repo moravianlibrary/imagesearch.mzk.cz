@@ -78,7 +78,9 @@ public class UpdateRequestHandler extends ContentStreamHandlerBase {
             String corePath = req.getCore().getCoreDescriptor().getInstanceDir();
             SolrInputDocument inputDocument = new SolrInputDocument();
             BufferedImage image = ImageIO.read(new URL((String) addParam.getUrl()).openStream());
-            ImageIO.write(image, "png", new File(corePath + "images", addParam.getId()));
+            File imagePath = new File(corePath + "images", addParam.getId());
+            imagePath.getParentFile().mkdirs();
+            ImageIO.write(image, "png", imagePath);
             image = ImageUtils.trimWhiteSpace(image);
 
             ImageDescriptorManager manager = ImageDescriptorManager.getInstance(corePath);
