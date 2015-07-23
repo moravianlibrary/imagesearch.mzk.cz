@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>BlockHashAlgorithm.h</itemPath>
+      <itemPath>CannyDHashAlgorithm.h</itemPath>
+      <itemPath>Controller.h</itemPath>
+      <itemPath>DHashAlgorithm.h</itemPath>
+      <itemPath>DHashException.h</itemPath>
+      <itemPath>HashAlgorithm.h</itemPath>
+      <itemPath>HashAlgorithmManager.h</itemPath>
+      <itemPath>HashManager.h</itemPath>
+      <itemPath>HashType.h</itemPath>
+      <itemPath>Image.h</itemPath>
+      <itemPath>LogicalException.h</itemPath>
+      <itemPath>MemoryManager.h</itemPath>
+      <itemPath>OrderedList.h</itemPath>
+      <itemPath>Record.h</itemPath>
+      <itemPath>RecordManager.h</itemPath>
+      <itemPath>RequestException.h</itemPath>
+      <itemPath>SearchResult.h</itemPath>
+      <itemPath>SharedMemoryException.h</itemPath>
+      <itemPath>appio.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>BlockHashAlgorithm.cpp</itemPath>
+      <itemPath>CannyDHashAlgorithm.cpp</itemPath>
+      <itemPath>Controller.cpp</itemPath>
+      <itemPath>DHashAlgorithm.cpp</itemPath>
+      <itemPath>HashAlgorithmManager.cpp</itemPath>
+      <itemPath>HashManager.cpp</itemPath>
+      <itemPath>Image.cpp</itemPath>
+      <itemPath>MemoryManager.cpp</itemPath>
+      <itemPath>OrderedList.cpp</itemPath>
+      <itemPath>Record.cpp</itemPath>
+      <itemPath>RecordManager.cpp</itemPath>
+      <itemPath>appio.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibLibItem>fcgi</linkerLibLibItem>
+            <linkerLibLibItem>fcgi++</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="BlockHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BlockHashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CannyDHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CannyDHashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Controller.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Controller.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DHashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DHashException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HashAlgorithmManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="HashAlgorithmManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HashManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="HashManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HashType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Image.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Image.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="LogicalException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MemoryManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MemoryManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="OrderedList.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="OrderedList.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Record.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Record.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="RecordManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="RecordManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="RequestException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SearchResult.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SharedMemoryException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="appio.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="appio.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <warningLevel>2</warningLevel>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibLibItem>fcgi++</linkerLibLibItem>
+            <linkerLibLibItem>fcgi</linkerLibLibItem>
+            <linkerLibLibItem>PocoJSON</linkerLibLibItem>
+            <linkerLibLibItem>PocoDataSQLite</linkerLibLibItem>
+            <linkerLibLibItem>PocoData</linkerLibLibItem>
+            <linkerLibLibItem>blockhash</linkerLibLibItem>
+            <linkerLibLibItem>dhash</linkerLibLibItem>
+            <linkerLibLibItem>opencv_calib3d</linkerLibLibItem>
+            <linkerLibLibItem>opencv_contrib</linkerLibLibItem>
+            <linkerLibLibItem>opencv_core</linkerLibLibItem>
+            <linkerLibLibItem>opencv_features2d</linkerLibLibItem>
+            <linkerLibLibItem>opencv_flann</linkerLibLibItem>
+            <linkerLibLibItem>opencv_highgui</linkerLibLibItem>
+            <linkerLibLibItem>opencv_imgproc</linkerLibLibItem>
+            <linkerLibLibItem>opencv_legacy</linkerLibLibItem>
+            <linkerLibLibItem>opencv_ml</linkerLibLibItem>
+            <linkerLibLibItem>opencv_objdetect</linkerLibLibItem>
+            <linkerLibLibItem>opencv_ocl</linkerLibLibItem>
+            <linkerLibLibItem>opencv_photo</linkerLibLibItem>
+            <linkerLibLibItem>opencv_stitching</linkerLibLibItem>
+            <linkerLibLibItem>opencv_superres</linkerLibLibItem>
+            <linkerLibLibItem>opencv_ts</linkerLibLibItem>
+            <linkerLibLibItem>opencv_video</linkerLibLibItem>
+            <linkerLibLibItem>opencv_videostab</linkerLibLibItem>
+            <linkerLibLibItem>PocoFoundationd</linkerLibLibItem>
+            <linkerLibLibItem>PocoNet</linkerLibLibItem>
+          </linkerLibItems>
+          <commandLine>`pkg-config MagickWand --libs`</commandLine>
+        </linkerTool>
+      </compileType>
+      <item path="BlockHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BlockHashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CannyDHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CannyDHashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Controller.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Controller.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DHashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DHashException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HashAlgorithmManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="HashAlgorithmManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HashManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="HashManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HashType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Image.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Image.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="LogicalException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MemoryManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MemoryManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="OrderedList.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="OrderedList.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Record.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Record.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="RecordManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="RecordManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="RequestException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SearchResult.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SharedMemoryException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="appio.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="appio.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
