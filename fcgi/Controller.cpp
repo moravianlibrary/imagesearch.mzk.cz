@@ -100,11 +100,14 @@ void Controller::searchIdenticalRequest(std::map<std::string, std::string>& para
     Record record;
     vector<uint8_t>* image_data = NULL;
     
-    if (params.count("blockhash")) {
-        record.getHashes()[BlockHash] = str2bin(params["blockhash"]);
+    if (params.count("blockHash")) {
+        record.getHashes()[BlockHash] = str2bin(params["blockHash"]);
     }
-    if (params.count("dhash")) {
-        record.getHashes()[DHash] = str2bin(params["dhash"]);
+    if (params.count("dHash")) {
+        record.getHashes()[DHash] = str2bin(params["dHash"]);
+    }
+    if (params.count("cannyDHash")) {
+        record.getHashes()[CannyDHash] = str2bin(params["cannyDHash"]);
     }
     if (params.count("url")) {
         image_data = Image::fromUrl(params["url"]);
@@ -132,11 +135,14 @@ void Controller::searchSimilarRequest(std::map<std::string, std::string>& params
     Record record;
     vector<uint8_t>* image_data = NULL;
     
-    if (params.count("blockhash")) {
-        record.getHashes()[BlockHash] = str2bin(params["blockhash"]);
+    if (params.count("blockHash")) {
+        record.getHashes()[BlockHash] = str2bin(params["blockHash"]);
     }
-    if (params.count("dhash")) {
-        record.getHashes()[DHash] = str2bin(params["dhash"]);
+    if (params.count("dHash")) {
+        record.getHashes()[DHash] = str2bin(params["dHash"]);
+    }
+    if (params.count("cannyDHash")) {
+        record.getHashes()[CannyDHash] = str2bin(params["cannyDHash"]);
     }
     if (params.count("url")) {
         image_data = Image::fromUrl(params["url"]);
