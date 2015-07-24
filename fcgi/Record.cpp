@@ -8,31 +8,18 @@
 #include "Record.h"
 
 #include <iomanip>
+#include <Poco/JSON/Parser.h>
 
 using namespace std;
 
 Record::Record() {
-    numGcps = 0;
-    rmsError = 0;
-}
-
-std::ostream& operator<<(std::ostream &out, const Record& record) {
-    out << "Record {"
-        << "\tid: " << record.getId()
-        << "\ttitle: " << record.getTitle()
-        << "\tnumGcps: " << record.getNumGcps()
-        << "\trmsError: " << record.getRmsError()
-        << "\tblockHash:" << hex << record.getHash(BlockHash)[0]
-        << std::endl;
-    return out;
 }
 
 Record::Record(const Record& orig) {
     this->id = orig.id;
     this->hashes = orig.hashes;
-    this->title = orig.title;
-    this->numGcps = orig.numGcps;
-    this->rmsError = orig.rmsError;
+    this->thumbnail = orig.thumbnail;
+    this->metadata = orig.metadata;
 }
 
 Record::~Record() {
@@ -41,8 +28,10 @@ Record::~Record() {
 Poco::JSON::Object Record::toJSON() {
     Poco::JSON::Object result;
     result.set("id", id);
-    result.set("title", title);
-    result.set("numGcps", numGcps);
-    result.set("rmsError", rmsError);
+    result.set("thumbnail", thumbnail);
+    if (!metadata.empty()) {
+        Poco::JSON::Parser parser;
+        result.set("metadata", parser.parse(metadata));
+    }
     return result;
 }

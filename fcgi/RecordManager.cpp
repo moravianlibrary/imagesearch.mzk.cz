@@ -29,9 +29,8 @@ RecordManager::RecordManager() {
     
     *session << "CREATE TABLE IF NOT EXISTS records ("
                 "id TEXT PRIMARY KEY,"
-                "title TEXT,"
-                "numGcps INTEGER,"
-                "rmsError REAL,"
+                "thumbnail TEXT,"
+                "metadata TEXT,"
                 "blockHash BLOB,"
                 "dHash BLOB,"
                 "cannyDHash BLOB)", now;
@@ -51,13 +50,12 @@ void RecordManager::putRecord(const Record& record) {
     Poco::Data::BLOB cannyDHashBLOB((unsigned char*) &cannyDHash[0], cannyDHash.size() * 8);
     
     *session << "INSERT OR REPLACE INTO records"
-                "(id, title, numGcps, rmsError, blockHash, dHash, cannyDHash)"
+                "(id, thumbnail, metadata, blockHash, dHash, cannyDHash)"
                 "VALUES"
-                "(?, ?, ?, ?, ?, ?, ?)",
+                "(?, ?, ?, ?, ?, ?)",
                 useRef(record.getId()),
-                useRef(record.getTitle()),
-                useRef(record.getNumGcps()),
-                useRef(record.getRmsError()),
+                useRef(record.getThumbnail()),
+                useRef(record.getMetadata()),
                 use(blockHashBLOB),
                 use(dHashBLOB),
                 use(cannyDHashBLOB),
@@ -69,19 +67,17 @@ void RecordManager::deleteRecord(const Record& record) {
 }
 
 Record RecordManager::getRecord(const std::string& id) {
-    string title;
-    size_t numGcps;
-    double rmsError;
+    string thumbnail;
+    string metadata;
     Poco::Data::BLOB blockHash;
     Poco::Data::BLOB dHash;
     Poco::Data::BLOB cannyDHash;
     
-    *session << "SELECT title, numGcps, rmsError, blockHash, dHash, cannyDHash "
+    *session << "SELECT thumbnail, metadata, blockHash, dHash, cannyDHash "
                 "FROM records "
                 "WHERE id = ?",
-                into(title),
-                into(numGcps),
-                into(rmsError),
+                into(thumbnail),
+                into(metadata),
                 into(blockHash),
                 into(dHash),
                 into(cannyDHash),
@@ -90,9 +86,8 @@ Record RecordManager::getRecord(const std::string& id) {
     
     Record record;
     record.setId(id);
-    record.setTitle(title);
-    record.setNumGcps(numGcps);
-    record.setRmsError(rmsError);
+    record.setThumbnail(thumbnail);
+    record.setMetadata(metadata);
     record.getHashes()[BlockHash] = convertTo64Vector(blockHash.rawContent(), blockHash.size());
     record.getHashes()[DHash] = convertTo64Vector(dHash.rawContent(), dHash.size());
     record.getHashes()[CannyDHash] = convertTo64Vector(cannyDHash.rawContent(), cannyDHash.size());
@@ -102,7 +97,7 @@ Record RecordManager::getRecord(const std::string& id) {
 
 std::vector<Record> RecordManager::getAllRecords() {
     Poco::Data::Statement select(*session);
-    select << "SELECT id, title, numGcps, rmsError, blockHash, dHash, cannyDHash FROM records", now;
+    select << "SELECT id, thumbnail, metadata, blockHash, dHash, cannyDHash FROM records", now;
     
     Poco::Data::RecordSet rs(select);
     
@@ -114,13 +109,12 @@ std::vector<Record> RecordManager::getAllRecords() {
         Poco::Data::BLOB cannyDHash;
         
         record.setId(it->get(0).extract<string>());
-        record.setTitle(it->get(1).extract<string>());
-        record.setNumGcps(it->get(2).extract<int>());
-        record.setRmsError(it->get(3).extract<double>());
+        record.setThumbnail(it->get(1).extract<string>());
+        record.setMetadata(it->get(2).extract<string>());
         
-        blockHash = it->get(4).extract<Poco::Data::BLOB>();
-        dHash = it->get(5).extract<Poco::Data::BLOB>();
-        cannyDHash = it->get(6).extract<Poco::Data::BLOB>();
+        blockHash = it->get(3).extract<Poco::Data::BLOB>();
+        dHash = it->get(4).extract<Poco::Data::BLOB>();
+        cannyDHash = it->get(5).extract<Poco::Data::BLOB>();
         
         record.getHashes()[BlockHash] = convertTo64Vector(blockHash.rawContent(), blockHash.size());
         record.getHashes()[DHash] = convertTo64Vector(dHash.rawContent(), dHash.size());

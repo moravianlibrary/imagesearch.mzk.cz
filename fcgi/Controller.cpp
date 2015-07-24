@@ -47,13 +47,10 @@ void Controller::ingestRequest(const Poco::Dynamic::Var& request) {
                 record.setId(json->getValue<string>("id"));
             }
             if (json->has("title")) {
-                record.setTitle(json->getValue<string>("title"));
+                record.setThumbnail(json->getValue<string>("thumbnail"));
             }
-            if (json->has("numGcps")) {
-                record.setNumGcps(json->getValue<size_t>("numGcps"));
-            }
-            if (json->has("rmsError")) {
-                record.setRmsError(json->getValue<double>("rmsError"));
+            if (json->has("metadata")) {
+                record.setMetadata(json->getValue<string>("metadata"));
             }
             if (json->has("blockHash")) {
                 record.getHashes()[BlockHash] = str2bin(json->getValue<string>("blockHash"));

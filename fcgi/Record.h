@@ -33,26 +33,20 @@ public:
     const std::vector<uint64_t>& getHash(HashType type) const { return hashes.at(type); }
     void setHashes(const std::map<HashType, std::vector<uint64_t> >& hashes) { this->hashes = hashes; }
     
-    const std::string& getTitle() const { return title; }
-    void setTitle(const std::string& title) { this->title = title; }
+    const std::string& getThumbnail() const { return thumbnail; }
+    void setThumbnail(const std::string& thumbnail) { this->thumbnail = thumbnail; }
     
-    const size_t& getNumGcps() const { return numGcps; }
-    void setNumGcps(const size_t numGcps) { this->numGcps = numGcps; }
-    
-    const double& getRmsError() const { return rmsError; }
-    void setRmsError(const double rmsError) { this->rmsError = rmsError; }
+    const std::string& getMetadata() const { return metadata; }
+    void setMetadata(const std::string& metadata) { this->metadata = metadata; }
     
     Poco::JSON::Object toJSON();
     
 private:
     std::string id;
     std::map<HashType, std::vector<uint64_t> > hashes;
-    std::string title;
-    size_t numGcps;
-    double rmsError;
+    std::string thumbnail;
+    std::string metadata;
 };
-
-std::ostream& operator<<(std::ostream &out, const Record& record);
 
 #endif	/* RECORD_H */
 
