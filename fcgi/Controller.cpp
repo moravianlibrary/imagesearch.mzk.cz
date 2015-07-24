@@ -99,8 +99,6 @@ void Controller::searchIdenticalRequest(std::map<std::string, std::string>& para
     }
     if (params.count("dhash")) {
         record.getHashes()[DHash] = str2bin(params["dhash"]);
-        cerr << params["dhash"];
-        cerr << hex << record.getHashes()[DHash][0];
     }
     
     if (!request.isEmpty()) {
