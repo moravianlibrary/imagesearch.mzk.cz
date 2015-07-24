@@ -40,5 +40,5 @@ HashType DHashAlgorithm::getType() {
 }
 
 size_t DHashAlgorithm::getHashSize() {
-    return 32;
+    return 8;
 }

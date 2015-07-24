@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <sstream>
+#include <cmath>
 
 #include <opencv2/opencv.hpp>
 #include <dhash.h>
@@ -24,9 +25,24 @@ const int kernel_size = 3;
 CannyDHashAlgorithm::~CannyDHashAlgorithm() {
 }
 
+cv::Size getKeepRatioSize(const cv::Mat& image, int size) {
+    int width = image.cols;
+    int height = image.rows;
+    
+    double ratio;
+    
+    if (width < height) {
+        ratio = size * 1.0 / width;
+    } else {
+        ratio = size * 1.0 / height;
+    }
+    return cv::Size((int) round(width*ratio), (int) round(height*ratio));
+}
+
 std::vector<uint64_t> CannyDHashAlgorithm::compute(const std::vector<uint8_t>* data) {
     cv::Mat image = cv::imdecode(*data, CV_LOAD_IMAGE_GRAYSCALE);
     cv::blur(image, image, cv::Size(3, 3));
+    cv::resize(image, image, getKeepRatioSize(image, 512), 0, 0, cv::INTER_LANCZOS4);
     
     cv::Canny(image, image, low_threshold, low_threshold*ratio, kernel_size);
     
@@ -54,5 +70,5 @@ HashType CannyDHashAlgorithm::getType() {
 }
 
 size_t CannyDHashAlgorithm::getHashSize() {
-    return 32;
+    return 8;
 }
