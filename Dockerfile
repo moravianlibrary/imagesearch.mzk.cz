@@ -27,7 +27,7 @@ RUN cd /build/poco && \
     make install
 
 RUN mkdir -p /build/dhash
-RUN wget -O /build/dhash/dhash.zip http://github.com/moravianlibrary/dhash/archive/master.zip
+RUN wget -O /build/dhash/dhash.zip https://github.com/moravianlibrary/dhash/archive/1.0.0.zip
 RUN cd /build/dhash && \
     unzip dhash.zip && \
     cd dhash-* && \
@@ -37,10 +37,10 @@ RUN cd /build/dhash && \
     make install
 
 RUN mkdir -p /build/blockhash
-RUN wget -O /build/blockhash/blockhash.zip https://github.com/moravianlibrary/blockhash/archive/master.zip
+RUN wget -O /build/blockhash/blockhash.zip https://github.com/moravianlibrary/blockhash/archive/1.0.0.zip
 RUN cd /build/blockhash && \
     unzip blockhash.zip && \
-    cd blockhash-master && \
+    cd blockhash-* && \
     make all && \
     cp blockhash.h /usr/local/include && \
     cp dist/Release/GNU-Linux-x86/libblockhash.so /usr/local/lib
