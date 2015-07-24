@@ -20,7 +20,7 @@ public:
     virtual ~HashManager();
     
     SearchResult searchIdentical(Record& record) const;
-    std::vector<SearchResult> searchSimilar(Record& record) const;
+    std::vector<SearchResult> searchSimilar(Record& record, int count) const;
     
     void update(const std::vector<Record>& records);
 private:

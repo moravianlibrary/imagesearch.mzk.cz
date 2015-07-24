@@ -90,10 +90,10 @@ SearchResult HashManager::searchIdentical(Record& record) const {
     return result;
 }
 
-std::vector<SearchResult> HashManager::searchSimilar(Record& record) const {
+std::vector<SearchResult> HashManager::searchSimilar(Record& record, int count) const {
     MemoryManager::getInstance().lockRead();
     
-    OrderedList similar_records(10);
+    OrderedList similar_records(count);
     map<HashType, vector<uint64_t> > hashes = record.getHashes();
     for (map<HashType, vector<uint64_t> >::const_iterator it = hashes.begin(); it != hashes.end(); it++) {
         if (!HashAlgorithmManager::getInstance().isSimilarHash(it->first)) {

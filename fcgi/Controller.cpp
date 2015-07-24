@@ -131,6 +131,7 @@ void Controller::searchIdenticalRequest(std::map<std::string, std::string>& para
 void Controller::searchSimilarRequest(std::map<std::string, std::string>& params, const Poco::Dynamic::Var& request) {
     Record record;
     vector<uint8_t>* image_data = NULL;
+    int count = 10;
     
     if (params.count("blockHash")) {
         record.getHashes()[BlockHash] = str2bin(params["blockHash"]);
@@ -143,6 +144,9 @@ void Controller::searchSimilarRequest(std::map<std::string, std::string>& params
     }
     if (params.count("url")) {
         image_data = Image::fromUrl(params["url"]);
+    }
+    if (params.count("count")) {
+        count = atoi(params["count"].c_str());
     }
     
     if (!request.isEmpty()) {
@@ -157,7 +161,7 @@ void Controller::searchSimilarRequest(std::map<std::string, std::string>& params
         delete image_data;
     }
     
-    appio::print_ok(HashManager::getInstance().searchSimilar(record));
+    appio::print_ok(HashManager::getInstance().searchSimilar(record, count));
 }
 
 void Controller::putRequest(const Record& record) {
