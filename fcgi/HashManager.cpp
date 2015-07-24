@@ -73,6 +73,7 @@ SearchResult HashManager::searchIdentical(Record& record) const {
     
     SearchResult result;
     result.setFound(true);
+    result.setDistance(1);
     for (vector<pair<string, double> >::const_iterator it = results.begin(); it != results.end(); it++) {
         if (result.getId().empty()) {
             result.setId(it->first);
