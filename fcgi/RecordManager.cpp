@@ -90,6 +90,7 @@ Record RecordManager::getRecord(const std::string& id) {
     
     Record record;
     record.setId(id);
+    record.setTitle(title);
     record.setNumGcps(numGcps);
     record.setRmsError(rmsError);
     record.getHashes()[BlockHash] = convertTo64Vector(blockHash.rawContent(), blockHash.size());
