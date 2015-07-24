@@ -1,3 +1,4 @@
 /fcgi/dist/
 /fcgi/build/
 .dep.inc
+*.vpp~*
