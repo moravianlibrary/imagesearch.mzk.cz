@@ -30,9 +30,6 @@ Controller::~Controller() {
 }
 
 void Controller::ingestRequest(const Poco::Dynamic::Var& request) {
-    Record record;
-    vector<uint8_t>* image_data = NULL;
-    
     if (request.type() != typeid(Poco::JSON::Array::Ptr)) {
         throw RequestException("Invalid JSON format, root must be array.");
     }
@@ -42,6 +39,9 @@ void Controller::ingestRequest(const Poco::Dynamic::Var& request) {
         
         for (Poco::JSON::Array::ConstIterator it = jsonArray->begin(); it != jsonArray->end(); it++) {
             Poco::JSON::Object::Ptr json = it->extract<Poco::JSON::Object::Ptr>();
+            
+            Record record;
+            vector<uint8_t>* image_data = NULL;
             
             if (json->has("id")) {
                 record.setId(json->getValue<string>("id"));
@@ -54,6 +54,15 @@ void Controller::ingestRequest(const Poco::Dynamic::Var& request) {
             }
             if (json->has("rmsError")) {
                 record.setRmsError(json->getValue<double>("rmsError"));
+            }
+            if (json->has("blockHash")) {
+                record.getHashes()[BlockHash] = str2bin(json->getValue<string>("blockHash"));
+            }
+            if (json->has("dHash")) {
+                record.getHashes()[DHash] = str2bin(json->getValue<string>("dHash"));
+            }
+            if (json->has("cannyDHash")) {
+                record.getHashes()[CannyDHash] = str2bin(json->getValue<string>("cannyDHash"));
             }
             if (json->has("image_base64")) {
                 image_data = Image::fromBase64(json->getValue<string>("image_base64"));
