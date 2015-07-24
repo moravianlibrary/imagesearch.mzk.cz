@@ -109,10 +109,13 @@ void Controller::searchIdenticalRequest(std::map<std::string, std::string>& para
     if (params.count("dhash")) {
         record.getHashes()[DHash] = str2bin(params["dhash"]);
     }
+    if (params.count("url")) {
+        image_data = Image::fromUrl(params["url"]);
+    }
     
     if (!request.isEmpty()) {
         Poco::JSON::Object::Ptr json = request.extract<Poco::JSON::Object::Ptr>();
-        if (json->has("image_base64")) {
+        if (!image_data && json->has("image_base64")) {
             image_data = Image::fromBase64(json->getValue<string>("image_base64"));
         }
         if (!image_data && json->has("image_url")) {
@@ -138,10 +141,13 @@ void Controller::searchSimilarRequest(std::map<std::string, std::string>& params
     if (params.count("dhash")) {
         record.getHashes()[DHash] = str2bin(params["dhash"]);
     }
+    if (params.count("url")) {
+        image_data = Image::fromUrl(params["url"]);
+    }
     
     if (!request.isEmpty()) {
         Poco::JSON::Object::Ptr json = request.extract<Poco::JSON::Object::Ptr>();
-        if (json->has("image_base64")) {
+        if (!image_data && json->has("image_base64")) {
             image_data = Image::fromBase64(json->getValue<string>("image_base64"));
         }
         if (!image_data && json->has("image_url")) {
