@@ -99,6 +99,8 @@ void Controller::searchIdenticalRequest(std::map<std::string, std::string>& para
     }
     if (params.count("dhash")) {
         record.getHashes()[DHash] = str2bin(params["dhash"]);
+        cerr << params["dhash"];
+        cerr << hex << record.getHashes()[DHash][0];
     }
     
     if (!request.isEmpty()) {
@@ -175,7 +177,7 @@ std::vector<uint64_t> Controller::str2bin(const string& str) {
         b1 = char2bin(b1);
         b2 = char2bin(b2);
         b1 = b1 << 4;
-        result[i] = b1 | b2;
+        result[len - i - 1] = b1 | b2;
     }
     int vlen = len / 8;
     vector<uint64_t> vresult;
