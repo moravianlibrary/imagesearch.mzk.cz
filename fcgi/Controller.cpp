@@ -180,9 +180,10 @@ std::vector<uint64_t> Controller::str2bin(const string& str) {
     int vlen = len / 8;
     vector<uint64_t> vresult;
     uint64_t* p = (uint64_t*) result;
+    p += vlen - 1;
     for (int i = 0; i < vlen; i++) {
         vresult.push_back(*p);
-        p++;
+        p--;
     }
     delete [] result;
     return vresult;
