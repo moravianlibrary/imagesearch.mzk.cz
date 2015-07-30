@@ -10,7 +10,154 @@ of similar ones.
 
 ## Installation
 
-TODO
+On debian based systems you can create init script. Create file /etc/init.d/imagesearch with following content
+
+```bash
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          imagesearch
+# Required-Start:    docker
+# Required-Stop:     docker
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Imagesearch application
+# Description:       Runs docker image.
+### END INIT INFO
+
+LOCK=/var/lock/imagesearch
+CONTAINER_NAME=imagesearch
+IMAGE_NAME=moravianlibrary/imagesearch.mzk.cz
+
+case "$1" in
+  start)
+    if [ -f $LOCK ]; then
+      echo "Imagesearch is running yet."
+    else
+      touch $LOCK
+      echo "Starting imagesearch.."
+      docker run --name $CONTAINER_NAME -p 8080:80 -v /var/imagesearch/:/data $IMAGE_NAME &
+      echo "[OK] Imagesearch is running."
+    fi
+    ;;
+  stop)
+    if [ -f $LOCK ]; then
+      echo "Stopping imagesearch.."
+      rm $LOCK \
+        && docker kill $CONTAINER_NAME \
+        && docker rm $CONTAINER_NAME \
+        && echo "[OK] Imagesearch is stopped."
+    else
+      echo "Imagesearch is not running."
+    fi
+    ;;
+  restart)
+    $0 stop
+    $0 start
+  ;;
+  status)
+    if [ -f $LOCK ]; then
+      echo "Imagesearch is running."
+    else
+      echo "Imagesearch is not running."
+    fi
+  ;;
+  update)
+    docker pull $IMAGE_NAME
+    $0 restart
+  ;;
+  *)
+    echo "Usage: /etc/init.d/imagesearch {start|stop|restart|status|update}"
+    exit 1
+    ;;
+esac
+
+exit 0
+
+```
+
+After it run these commands
+
+```
+# chmod 755 /etc/init.d/imagesearch
+# update-rc.d imagesearch defaults
+```
+
+Now the imagesearch service will be automatically start at server startup.
+
+Docker container expects directory /var/imagesearch. You must create it and set owner of this directory to uid 33.
+
+```
+# mkdir -p /var/imagesearch
+# chowner 33:33 /var/imagesearch
+```
+
+Now you can start service by
+
+```
+# /etc/init.d/imagesearch start
+```
+
+The service listen on port 8080. Now you should install and setup apache http server, which will forward requests to docker container and it also will protect endpoints /v1/ingest and /v1/commit by password.
+
+```
+# apt-get update
+# apt-get install apache2
+```
+
+In directory /etc/apache2/sites-available create file with name imagesearch.mzk.cz and with content:
+
+```
+<VirtualHost *:80>
+        ServerName imagesearch.mzk.cz
+
+        <IfModule mod_rewrite.c>
+              RewriteEngine on
+              Options +FollowSymlinks
+
+              ProxyPassMatch ^/(.*)$  http://localhost:8080/$1
+        </IfModule>
+
+        <Location "/v1/ingest">
+              AuthType Basic
+              AuthName "Restricted area"
+              AuthBasicProvider file
+              AuthUserFile /usr/local/apache/passwd/imagesearch
+              Require valid-user
+        </Location>
+
+        <Location "/v1/commit">
+              AuthType Basic
+              AuthName "Restricted area"
+              AuthBasicProvider file
+              AuthUserFile /usr/local/apache/passwd/imagesearch
+              Require valid-user
+        </Location>
+
+
+        ErrorLog ${APACHE_LOG_DIR}/imagesearch-error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog ${APACHE_LOG_DIR}/imagesearch-access.log combined
+</VirtualHost>
+```
+
+You must create credential file /usr/local/apache/passwd/imagesearch, where your username and password will be stored.
+You can create it by command:
+
+```
+# htpasswd -c /usr/local/apache/passwd/imagesearch yourusername
+```
+
+After it enable new settings and reload apache server.
+
+```
+# a2ensite imagesearch.mzk.cz
+# /etc/init.d/apache2 reload
+```
 
 ## API
 
