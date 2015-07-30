@@ -159,6 +159,20 @@ After it enable new settings and reload apache server.
 # /etc/init.d/apache2 reload
 ```
 
+**Attention:** Docker's default behavior is that it modify iptables configuration and enables exposed ports defined by -p option. It is possible override this behavior by adding --iptables=false to the Docker daemon.
+
+On Debian based systems, you can edit /etc/default/docker and uncomment the DOCKER_OPTS line:
+
+```
+DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 --iptables=false"
+```
+
+After doing so, you need to restart Docker with
+
+```
+# /etc/init.d/docker restart
+```
+
 ## API
 
 Imagesearch.mzk.cz provides several endpoints, which are described bellow. You can use them using the basic GET or POST
