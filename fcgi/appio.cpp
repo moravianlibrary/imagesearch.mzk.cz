@@ -55,6 +55,7 @@ string get_request_content(const FCGX_Request & request) {
 
 void print_header() {
     cout << "Content-type: application/json\r\n";
+    cout << "Access-Control-Allow-Origin: *\r\n";
     cout << "\r\n";
 }
 
