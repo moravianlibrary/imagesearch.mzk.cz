@@ -46,7 +46,7 @@ void Controller::ingestRequest(const Poco::Dynamic::Var& request) {
             if (json->has("id")) {
                 record.setId(json->getValue<string>("id"));
             }
-            if (json->has("title")) {
+            if (json->has("thumbnail")) {
                 record.setThumbnail(json->getValue<string>("thumbnail"));
             }
             if (json->has("metadata")) {
