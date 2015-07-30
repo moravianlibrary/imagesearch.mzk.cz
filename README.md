@@ -6,7 +6,7 @@ of similar ones.
 
 ## Requirements
 
-* Docker
+* [Docker](https://www.docker.com/)
 
 ## Installation
 
