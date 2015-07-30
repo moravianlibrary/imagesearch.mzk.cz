@@ -2,7 +2,7 @@
 
 Imagesearch.mzk.cz is web service that provides services for content based image searching. You can find your image
 for within a second. You can ask whether there is an image, which is identical to yours, or you can request a set
-of similar images.
+of similar ones.
 
 ## Requirements
 
@@ -118,7 +118,7 @@ You can seach identical images using both GET or POST requests.
 ##### GET
 
 ```
-/v1/searchIdentical?blockHash=asfsgdfgdfgsdf56&dHash=dfgdg5525
+/v1/searchIdentical?blockHash=ffff816180a18239c731a381e087b8cf883df971dc01bc858003800dd80fffff&dHash=2592989844c4e0d8
 /v1/searchIdentical?url=http://www.example.com/path/to/image.jpg
 ```
 
@@ -159,7 +159,7 @@ You can seach similar images using both GET or POST requests.
 ##### GET
 
 ```
-/v1/searchSimilar?cannyDHash=asfsgdfgdfgsdf56&count=10
+/v1/searchSimilar?cannyDHash=0f13332927217ada&count=10
 ```
 
 * By parameter count you can specify how many the most similar images will be returned.
