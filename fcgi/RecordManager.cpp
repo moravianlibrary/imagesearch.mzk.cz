@@ -26,6 +26,7 @@ RecordManager& RecordManager::getInstance() {
 RecordManager::RecordManager() {
     Poco::Data::SQLite::Connector::registerConnector();
     session = new Poco::Data::Session("SQLite", getenv("IMAGESEARCH_DB"));
+    session->setConnectionTimeout(30000);
     
     *session << "CREATE TABLE IF NOT EXISTS records ("
                 "id TEXT PRIMARY KEY,"
