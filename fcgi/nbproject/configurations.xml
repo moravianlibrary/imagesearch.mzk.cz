@@ -186,6 +186,7 @@
             <linkerLibLibItem>opencv_videostab</linkerLibLibItem>
             <linkerLibLibItem>PocoFoundationd</linkerLibLibItem>
             <linkerLibLibItem>PocoNet</linkerLibLibItem>
+            <linkerLibLibItem>PocoNetSSL</linkerLibLibItem>
           </linkerLibItems>
           <commandLine>`pkg-config MagickWand --libs`</commandLine>
         </linkerTool>
