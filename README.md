@@ -116,6 +116,7 @@ In directory /etc/apache2/sites-available create file with name imagesearch.mzk.
               Options +FollowSymlinks
 
               ProxyPassMatch ^/(.*)$  http://localhost:8080/$1
+              ProxyPass / http://localhost:8080
         </IfModule>
 
         <Location "/v1/ingest">
