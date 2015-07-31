@@ -21,7 +21,11 @@
               queryImage.src = reader.result;
               var loaded = 0;
 
-              sendIdenticalRequestBase64(base64, function(response) {
+              var request = {
+                'image_base64': base64
+              };
+
+              sendIdenticalRequest(request, function(response) {
                 createIdenticalResult(response);
                 if (loaded) {
                   hideImageInputs();
@@ -32,7 +36,7 @@
                 }
 
               });
-              sendSimilarRequestBase64(base64, function(response) {
+              sendSimilarRequest(request, function(response) {
                 createSimilarResult(response);
                 if (loaded) {
                   hideImageInputs();
@@ -55,7 +59,12 @@
         var queryImage = document.getElementById('query-image');
         queryImage.src = url;
         var loaded = 0;
-        sendIdenticalRequestUrl(url, function(response) {
+
+        var request = {
+          'image_url': url
+        };
+
+        sendIdenticalRequest(request, function(response) {
           createIdenticalResult(response);
           if (loaded) {
             hideImageInputs();
@@ -66,7 +75,7 @@
           }
 
         });
-        sendSimilarRequestUrl(url, function(response) {
+        sendSimilarRequest(request, function(response) {
           createSimilarResult(response);
           if (loaded) {
             hideImageInputs();
@@ -79,7 +88,7 @@
         showLoading();
       }
 
-      function sendXHRPost(url, data, callback) {
+      function sendXHR(url, data, callback) {
         var xmlhttp = new XMLHttpRequest();
 
         xmlhttp.onreadystatechange = function() {
@@ -93,52 +102,16 @@
         xmlhttp.send(data);
       }
 
-      function sendXHRGet(url, callback) {
-        var xmlhttp = new XMLHttpRequest();
-
-        xmlhttp.onreadystatechange = function() {
-          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            var json = JSON.parse(xmlhttp.responseText);
-            callback(json);
-          }
-        }
-
-        xmlhttp.open('GET', url, true);
-        xmlhttp.send();
-      }
-
-      function sendIdenticalRequestBase64(base64, callback) {
+      function sendIdenticalRequest(request, callback) {
         var url = '/v1/searchIdentical';
-        var request = {
-          'image_base64': base64
-        };
-        sendXHRPost(url, JSON.stringify(request), function(response) {
+        sendXHR(url, JSON.stringify(request), function(response) {
           callback(response);
         });
       }
 
-      function sendSimilarRequestBase64(base64, callback) {
+      function sendSimilarRequest(request, callback) {
         var url = '/v1/searchSimilar?count=50';
-        var request = {
-          'image_base64': base64
-        };
-        sendXHRPost(url, JSON.stringify(request), function(response) {
-          callback(response);
-        });
-      }
-
-      function sendIdenticalRequestUrl(url, callback) {
-        var url = '/v1/searchIdentical?url=' + url;
-
-        sendXHRGet(url, function(response) {
-          callback(response);
-        });
-      }
-
-      function sendSimilarRequestUrl(url, callback) {
-        var url = '/v1/searchSimilar?count=50&url=' + url;
-
-        sendXHRGet(url, function(response) {
+        sendXHR(url, JSON.stringify(request), function(response) {
           callback(response);
         });
       }

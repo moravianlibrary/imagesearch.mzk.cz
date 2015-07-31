@@ -228,7 +228,7 @@ Uploading is done via POST request, which has following structure:
   - blockHash, dHash, cannyDHash: You can compute hashes by yourselves and send their hexadecimal representations.
 * From listed methods how to upload image data you should choose only one. If you use several methods at once
   the behaviour is not defined.
-  
+
 ### Deleting data
 
 For deleting data use also ingest enpdoint:
@@ -291,6 +291,14 @@ You can seach identical images using both GET or POST requests.
 }
 ```
 
+or
+
+```json
+{
+  "image_url": "..."
+}
+```
+
 Response has form:
 
 ```json
@@ -330,6 +338,14 @@ You can seach similar images using both GET or POST requests.
 ```json
 {
   "image_base64": "..."
+}
+```
+
+or
+
+```json
+{
+  "image_url": "..."
 }
 ```
 
