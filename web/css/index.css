@@ -1,0 +1,32 @@
+h1 {
+  text-align: center;
+}
+#query-image-wrapper {
+  text-align: center;
+}
+#result {
+  display: none;
+}
+#loading {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100000;
+  background-image: url("../img/ajax-loader.gif");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: white;
+  opacity: 0.7;
+}
+#result #search-similar-result div {
+  display: inline-block;
+  text-align: center;
+  margin: 5px;
+}
+#url-form {
+  text-align: center;
+  margin: 10px;
+}

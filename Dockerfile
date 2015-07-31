@@ -56,12 +56,14 @@ RUN touch /shared/dhash
 RUN touch /shared/cannydhash
 RUN chmod -R a+w /shared
 
-COPY fcgi /build/fcgi
-RUN cd /build/fcgi && make -e CONF=Release
-
 COPY lighttpd-imagesearch.conf /etc/lighttpd/conf-available/30-imagesearch.conf
 RUN lighttpd-enable-mod fastcgi
 RUN lighttpd-enable-mod imagesearch
+
+COPY web /var/www/html
+
+COPY fcgi /build/fcgi
+RUN cd /build/fcgi && make -e CONF=Release
 
 COPY init.sh /init.sh
 ENTRYPOINT ["/init.sh"]

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/dropzone.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script type="text/javascript" src="js/dropzone.js"></script>
+    <title>ImageSearch.mzk.cz</title>
+
+    <script type="text/javascript">
+      Dropzone.options.imageInput = {
+        init: function() {
+          var dropzone = this;
+          this.on('addedfile', function(file) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+              var base64 = reader.result.replace(/.*;base64,/, "");
+
+              var queryImage = document.getElementById('query-image');
+              queryImage.src = reader.result;
+              var loaded = 0;
+
+              sendIdenticalRequestBase64(base64, function(response) {
+                createIdenticalResult(response);
+                if (loaded) {
+                  hideImageInputs();
+                  hideLoading();
+                  showResult();
+                } else {
+                  loaded++;
+                }
+
+              });
+              sendSimilarRequestBase64(base64, function(response) {
+                createSimilarResult(response);
+                if (loaded) {
+                  hideImageInputs();
+                  hideLoading();
+                  showResult();
+                } else {
+                  loaded++;
+                }
+              });
+              showLoading();
+              dropzone.removeFile(file);
+            }
+            reader.readAsDataURL(file);
+          });
+        }
+      }
+
+      function urlInput() {
+        var url = document.getElementById('image-url').value;
+        var queryImage = document.getElementById('query-image');
+        queryImage.src = url;
+        var loaded = 0;
+        sendIdenticalRequestUrl(url, function(response) {
+          createIdenticalResult(response);
+          if (loaded) {
+            hideImageInputs();
+            hideLoading();
+            showResult();
+          } else {
+            loaded++;
+          }
+
+        });
+        sendSimilarRequestUrl(url, function(response) {
+          createSimilarResult(response);
+          if (loaded) {
+            hideImageInputs();
+            hideLoading();
+            showResult();
+          } else {
+            loaded++;
+          }
+        });
+        showLoading();
+      }
+
+      function sendXHRPost(url, data, callback) {
+        var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.onreadystatechange = function() {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var json = JSON.parse(xmlhttp.responseText);
+            callback(json);
+          }
+        }
+
+        xmlhttp.open('POST', url, true);
+        xmlhttp.send(data);
+      }
+
+      function sendXHRGet(url, callback) {
+        var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.onreadystatechange = function() {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var json = JSON.parse(xmlhttp.responseText);
+            callback(json);
+          }
+        }
+
+        xmlhttp.open('GET', url, true);
+        xmlhttp.send();
+      }
+
+      function sendIdenticalRequestBase64(base64, callback) {
+        var url = '/v1/searchIdentical';
+        var request = {
+          'image_base64': base64
+        };
+        sendXHRPost(url, JSON.stringify(request), function(response) {
+          callback(response);
+        });
+      }
+
+      function sendSimilarRequestBase64(base64, callback) {
+        var url = '/v1/searchSimilar?count=50';
+        var request = {
+          'image_base64': base64
+        };
+        sendXHRPost(url, JSON.stringify(request), function(response) {
+          callback(response);
+        });
+      }
+
+      function sendIdenticalRequestUrl(url, callback) {
+        var url = '/v1/searchIdentical?url=' + url;
+
+        sendXHRGet(url, function(response) {
+          callback(response);
+        });
+      }
+
+      function sendSimilarRequestUrl(url, callback) {
+        var url = '/v1/searchSimilar?count=50&url=' + url;
+
+        sendXHRGet(url, function(response) {
+          callback(response);
+        });
+      }
+
+      function createIdenticalResult(response) {
+        var div = document.getElementById('search-identical-result')
+
+        if (response.status == 'ok') {
+          if (response.data.found) {
+            var heading = document.createElement('h3');
+            heading.innerHTML = 'Identical image was found.';
+            var image = document.createElement('img');
+            image.width = 400;
+            image.src = response.data.record.thumbnail;
+            div.appendChild(heading);
+            div.appendChild(image);
+          } else {
+            var heading = document.createElement('h3');
+            heading.innerHTML = 'Identical image was not found.';
+            div.appendChild(heading);
+          }
+        } else {
+          var heading = document.createElement('h3');
+          heading.innerHTML = 'Error';
+          var message = document.createElement('p');
+          message.innerHTML = response.message;
+          div.appendChild(heading);
+          div.appendChild(message);
+        }
+      }
+
+      function createSimilarResult(response) {
+        var div = document.getElementById('search-similar-result')
+
+        if (response.status == 'ok') {
+          var imageContainer = document.createElement('p');
+
+          for (var i = 0; i < response.data.length; i++) {
+            var object = response.data[i];
+            var imageWrapper = document.createElement('div');
+            var image = document.createElement('img');
+            image.width = 400;
+            image.src = object.record.thumbnail;
+            var distance = document.createElement('span');
+            distance.innerHTML = object.distance;
+            imageWrapper.appendChild(image);
+            imageWrapper.appendChild(document.createElement('br'));
+            imageWrapper.appendChild(distance);
+            imageContainer.appendChild(imageWrapper);
+          }
+          div.appendChild(imageContainer);
+        } else {
+          var heading = document.createElement('h3');
+          heading.innerHTML = 'Error';
+          var message = document.createElement('p');
+          message.innerHTML = response.message;
+          div.appendChild(heading);
+          div.appendChild(message);
+        }
+      }
+
+      function showLoading() {
+        var loading = document.getElementById('loading');
+        loading.style.display = 'block';
+      }
+
+      function hideLoading() {
+        var loading = document.getElementById('loading');
+        loading.style.display = 'none';
+      }
+
+      function hideImageInputs() {
+        var imageInput = document.getElementById('image-inputs');
+        imageInput.style.display = 'none';
+      }
+
+      function showResult() {
+        var result = document.getElementById('result');
+        result.style.display = 'block';
+      }
+    </script>
+
+  </head>
+
+  <body>
+    <h1>Imagesearch.mzk.cz</h1>
+    <div id="image-inputs">
+      <form action="/" class="dropzone" id="image-input"></form>
+      <div id="url-form">
+        <span>Insert url of image: </span>
+        <input type="text" id="image-url">
+        <button onclick="urlInput()">Send</button>
+      </div>
+    </div>
+    <div id="result">
+      <div id="query-image-wrapper">
+        <img width="400" id="query-image">
+      </div>
+      <h2>Search identical result</h2>
+      <div id="search-identical-result"></div>
+
+      <h2>Search similar result</h2>
+      <div id="search-similar-result"></div>
+    </div>
+    <div id="loading"></div>
+  </body>
+
+</html>
