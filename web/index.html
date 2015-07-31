@@ -123,11 +123,15 @@
           if (response.data.found) {
             var heading = document.createElement('h3');
             heading.innerHTML = 'Identical image was found.';
+            var a = document.createElement('a');
+            a.href = 'http://staremapy.georeferencer.cz/map/' + response.data.record.id;
+            a.target = '_blank';
             var image = document.createElement('img');
             image.width = 400;
             image.src = response.data.record.thumbnail;
+            a.appendChild(image);
             div.appendChild(heading);
-            div.appendChild(image);
+            div.appendChild(a);
           } else {
             var heading = document.createElement('h3');
             heading.innerHTML = 'Identical image was not found.';
@@ -152,12 +156,16 @@
           for (var i = 0; i < response.data.length; i++) {
             var object = response.data[i];
             var imageWrapper = document.createElement('div');
+            var a = document.createElement('a');
+            a.href = 'http://staremapy.georeferencer.cz/map/' + object.record.id;
+            a.target = '_blank';
             var image = document.createElement('img');
             image.width = 400;
             image.src = object.record.thumbnail;
             var distance = document.createElement('span');
             distance.innerHTML = object.distance;
-            imageWrapper.appendChild(image);
+            a.appendChild(image);
+            imageWrapper.appendChild(a);
             imageWrapper.appendChild(document.createElement('br'));
             imageWrapper.appendChild(distance);
             imageContainer.appendChild(imageWrapper);
