@@ -89,7 +89,7 @@ Docker container expects directory /var/imagesearch. You must create it and set 
 
 ```
 # mkdir -p /var/imagesearch
-# chowner 33:33 /var/imagesearch
+# chown 33:33 /var/imagesearch
 ```
 
 Now you can start service by
