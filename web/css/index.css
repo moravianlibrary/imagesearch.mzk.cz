@@ -26,6 +26,10 @@ h1 {
   text-align: center;
   margin: 5px;
 }
+#result #search-identical-result div {
+  display: inline-block;
+  text-align: center;
+}
 #url-form {
   text-align: center;
   margin: 10px;

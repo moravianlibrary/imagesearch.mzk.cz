@@ -123,15 +123,19 @@
           if (response.data.found) {
             var heading = document.createElement('h3');
             heading.innerHTML = 'Identical image was found.';
-            var a = document.createElement('a');
-            a.href = 'http://staremapy.georeferencer.cz/map/' + response.data.record.id;
-            a.target = '_blank';
+            var imageWrapper = document.createElement('div');
             var image = document.createElement('img');
             image.width = 400;
             image.src = response.data.record.thumbnail;
-            a.appendChild(image);
+            var a = document.createElement('a');
+            a.href = 'http://staremapy.georeferencer.cz/map/' + response.data.record.id;
+            a.target = '_blank';
+            a.innerHTML = response.data.record.id;
+            imageWrapper.appendChild(image);
+            imageWrapper.appendChild(document.createElement('br'));
+            imageWrapper.appendChild(a);
             div.appendChild(heading);
-            div.appendChild(a);
+            div.appendChild(imageWrapper);
           } else {
             var heading = document.createElement('h3');
             heading.innerHTML = 'Identical image was not found.';
@@ -156,15 +160,17 @@
           for (var i = 0; i < response.data.length; i++) {
             var object = response.data[i];
             var imageWrapper = document.createElement('div');
-            var a = document.createElement('a');
-            a.href = 'http://staremapy.georeferencer.cz/map/' + object.record.id;
-            a.target = '_blank';
             var image = document.createElement('img');
             image.width = 400;
             image.src = object.record.thumbnail;
+            var a = document.createElement('a');
+            a.href = 'http://staremapy.georeferencer.cz/map/' + object.record.id;
+            a.target = '_blank';
+            a.innerHTML = object.record.id;
             var distance = document.createElement('span');
             distance.innerHTML = object.distance;
-            a.appendChild(image);
+            imageWrapper.appendChild(image);
+            imageWrapper.appendChild(document.createElement('br'));
             imageWrapper.appendChild(a);
             imageWrapper.appendChild(document.createElement('br'));
             imageWrapper.appendChild(distance);
