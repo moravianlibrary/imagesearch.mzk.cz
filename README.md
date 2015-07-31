@@ -160,7 +160,7 @@ After it enable new settings and reload apache server.
 # /etc/init.d/apache2 reload
 ```
 
-**Attention:** Docker's default behavior is that it modify iptables configuration and enables exposed ports defined by -p option. It is possible override this behavior by adding --iptables=false to the Docker daemon.
+**Attention:** Docker's default behavior is that it modifies iptables configuration and enables exposed ports defined by -p option. It is possible override this behavior by adding --iptables=false to the Docker daemon.
 
 On Debian based systems, you can edit /etc/default/docker and uncomment the DOCKER_OPTS line:
 
