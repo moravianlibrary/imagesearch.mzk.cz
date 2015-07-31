@@ -1,4 +1,5 @@
 /fcgi/dist/
 /fcgi/build/
+/fcgi/nbproject/private
 .dep.inc
 *.vpp~*
