@@ -8,8 +8,10 @@
 #include "HashAlgorithmManager.h"
 #include "DHashAlgorithm.h"
 #include "BlockHashAlgorithm.h"
-#include "CannyDHashAlgorithm.h"
 #include "LogicalException.h"
+#include "GaussDHashAlgorithm.h"
+#include "Gauss2DHashAlgorithm.h"
+#include "GaussBlockHashAlgorithm.h"
 
 #include <iostream>
 #include <iomanip>
@@ -25,7 +27,9 @@ HashAlgorithmManager::HashAlgorithmManager() {
     identicalHashes.push_back(new DHashAlgorithm());
     identicalHashes.push_back(new BlockHashAlgorithm());
     
-    similarHashes.push_back(new CannyDHashAlgorithm());
+    similarHashes.push_back(new GaussDHashAlgorithm());
+    similarHashes.push_back(new Gauss2DHashAlgorithm());
+    similarHashes.push_back(new GaussBlockHashAlgorithm());
 }
 
 HashAlgorithmManager::~HashAlgorithmManager() {

@@ -11,7 +11,9 @@
 typedef enum HashType {
     DHash,
     BlockHash,
-    CannyDHash        
+    GaussDHash,
+    Gauss2DHash,
+    GaussBlockHash
 } HashType;
 
 #endif	/* HASHTYPE_H */

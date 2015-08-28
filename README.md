@@ -202,7 +202,9 @@ Uploading is done via POST request, which has following structure:
     "image_base64": "...",
     "blockHash": "...",
     "dHash": "...",
-    "cannyDHash": "..."
+    "gaussDHash": "...",
+    "gauss2DHash": "...",
+    "gaussBlockHash": "..."
   },
   {
     "id": "example2",
@@ -216,7 +218,9 @@ Uploading is done via POST request, which has following structure:
     "image_base64": "...",
     "blockHash": "...",
     "dHash": "...",
-    "cannyDHash": "..."
+    "gaussDHash": "...",
+    "gauss2DHash": "...",
+    "gaussBlockHash": "..."
   }
 ]
 ```
@@ -226,7 +230,7 @@ Uploading is done via POST request, which has following structure:
 * Image data can be send by several ways:
   - image_url: You can specify url, where the image can be downloaded.
   - image_base64: You can send image data in base64 format.
-  - blockHash, dHash, cannyDHash: You can compute hashes by yourselves and send their hexadecimal representations.
+  - blockHash, dHash, gaussDHash, gauss2DHash, gaussBlockHash: You can compute hashes by yourselves and send their hexadecimal representations.
 * From listed methods how to upload image data you should choose only one. If you use several methods at once
   the behaviour is not defined.
 
@@ -329,7 +333,7 @@ You can seach similar images using both GET or POST requests.
 ##### GET
 
 ```
-/v1/searchSimilar?cannyDHash=0f13332927217ada&count=10
+/v1/searchSimilar?gaussDHash=0f13332927217ada&count=10
 ```
 
 * By parameter count you can specify how many the most similar images will be returned.

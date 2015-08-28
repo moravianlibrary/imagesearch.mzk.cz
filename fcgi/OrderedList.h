@@ -9,6 +9,7 @@
 #define	ORDEREDLIST_H
 
 #include <list>
+#include <map>
 #include <string>
 
 class OrderedList {
@@ -17,11 +18,14 @@ public:
     OrderedList(const OrderedList& orig);
     virtual ~OrderedList();
     
-    void push(const std::pair<std::string, double>& item);
+    void push(std::pair<std::string, double> item);
     const std::list<std::pair<std::string, double> >& getList() const;
+protected:
+    void remove(std::string key);
 private:
     size_t size;
     std::list<std::pair<std::string, double> > data;
+    std::map<std::string, double> exists;
 };
 
 #endif	/* ORDEREDLIST_H */

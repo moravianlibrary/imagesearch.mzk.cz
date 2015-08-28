@@ -36,9 +36,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/BlockHashAlgorithm.o \
-	${OBJECTDIR}/CannyDHashAlgorithm.o \
 	${OBJECTDIR}/Controller.o \
 	${OBJECTDIR}/DHashAlgorithm.o \
+	${OBJECTDIR}/Gauss2DHashAlgorithm.o \
+	${OBJECTDIR}/GaussBlockHashAlgorithm.o \
+	${OBJECTDIR}/GaussDHashAlgorithm.o \
 	${OBJECTDIR}/HashAlgorithmManager.o \
 	${OBJECTDIR}/HashManager.o \
 	${OBJECTDIR}/Image.o \
@@ -79,11 +81,6 @@ ${OBJECTDIR}/BlockHashAlgorithm.o: BlockHashAlgorithm.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BlockHashAlgorithm.o BlockHashAlgorithm.cpp
 
-${OBJECTDIR}/CannyDHashAlgorithm.o: CannyDHashAlgorithm.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CannyDHashAlgorithm.o CannyDHashAlgorithm.cpp
-
 ${OBJECTDIR}/Controller.o: Controller.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -93,6 +90,21 @@ ${OBJECTDIR}/DHashAlgorithm.o: DHashAlgorithm.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DHashAlgorithm.o DHashAlgorithm.cpp
+
+${OBJECTDIR}/Gauss2DHashAlgorithm.o: Gauss2DHashAlgorithm.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Gauss2DHashAlgorithm.o Gauss2DHashAlgorithm.cpp
+
+${OBJECTDIR}/GaussBlockHashAlgorithm.o: GaussBlockHashAlgorithm.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GaussBlockHashAlgorithm.o GaussBlockHashAlgorithm.cpp
+
+${OBJECTDIR}/GaussDHashAlgorithm.o: GaussDHashAlgorithm.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GaussDHashAlgorithm.o GaussDHashAlgorithm.cpp
 
 ${OBJECTDIR}/HashAlgorithmManager.o: HashAlgorithmManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}

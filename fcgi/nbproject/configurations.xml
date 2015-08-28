@@ -5,10 +5,12 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>BlockHashAlgorithm.h</itemPath>
-      <itemPath>CannyDHashAlgorithm.h</itemPath>
       <itemPath>Controller.h</itemPath>
       <itemPath>DHashAlgorithm.h</itemPath>
       <itemPath>DHashException.h</itemPath>
+      <itemPath>Gauss2DHashAlgorithm.h</itemPath>
+      <itemPath>GaussBlockHashAlgorithm.h</itemPath>
+      <itemPath>GaussDHashAlgorithm.h</itemPath>
       <itemPath>HashAlgorithm.h</itemPath>
       <itemPath>HashAlgorithmManager.h</itemPath>
       <itemPath>HashManager.h</itemPath>
@@ -32,9 +34,11 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>BlockHashAlgorithm.cpp</itemPath>
-      <itemPath>CannyDHashAlgorithm.cpp</itemPath>
       <itemPath>Controller.cpp</itemPath>
       <itemPath>DHashAlgorithm.cpp</itemPath>
+      <itemPath>Gauss2DHashAlgorithm.cpp</itemPath>
+      <itemPath>GaussBlockHashAlgorithm.cpp</itemPath>
+      <itemPath>GaussDHashAlgorithm.cpp</itemPath>
       <itemPath>HashAlgorithmManager.cpp</itemPath>
       <itemPath>HashManager.cpp</itemPath>
       <itemPath>Image.cpp</itemPath>
@@ -77,10 +81,6 @@
       </item>
       <item path="BlockHashAlgorithm.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="CannyDHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="CannyDHashAlgorithm.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Controller.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Controller.h" ex="false" tool="3" flavor2="0">
@@ -90,6 +90,18 @@
       <item path="DHashAlgorithm.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="DHashException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Gauss2DHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Gauss2DHashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GaussBlockHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GaussBlockHashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GaussDHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GaussDHashAlgorithm.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="HashAlgorithm.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -195,10 +207,6 @@
       </item>
       <item path="BlockHashAlgorithm.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="CannyDHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="CannyDHashAlgorithm.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Controller.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Controller.h" ex="false" tool="3" flavor2="0">
@@ -208,6 +216,18 @@
       <item path="DHashAlgorithm.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="DHashException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Gauss2DHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Gauss2DHashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GaussBlockHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GaussBlockHashAlgorithm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GaussDHashAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GaussDHashAlgorithm.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="HashAlgorithm.h" ex="false" tool="3" flavor2="0">
       </item>

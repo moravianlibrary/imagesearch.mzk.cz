@@ -53,7 +53,9 @@ COPY readers_count /shared/readers_count
 COPY can_read /shared/can_read
 RUN touch /shared/blockhash
 RUN touch /shared/dhash
-RUN touch /shared/cannydhash
+RUN touch /shared/gaussdhash
+RUN touch /shared/gauss2dhash
+RUN touch /shared/gaussblockhash
 RUN chmod -R a+w /shared
 
 COPY lighttpd-imagesearch.conf /etc/lighttpd/conf-available/30-imagesearch.conf

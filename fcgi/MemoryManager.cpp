@@ -26,7 +26,9 @@ MemoryManager& MemoryManager::getInstance() {
 MemoryManager::MemoryManager() {
     mem_fds[BlockHash] = new Poco::File("/shared/blockhash");
     mem_fds[DHash] = new Poco::File("/shared/dhash");
-    mem_fds[CannyDHash] = new Poco::File("/shared/cannydhash");
+    mem_fds[GaussDHash] = new Poco::File("/shared/gaussdhash");
+    mem_fds[Gauss2DHash] = new Poco::File("/shared/gauss2dhash");
+    mem_fds[GaussBlockHash] = new Poco::File("/shared/gaussblockhash");
     
     readers_count_fd = new Poco::File("/shared/readers_count");
     can_read_fd = new Poco::File("/shared/can_read");

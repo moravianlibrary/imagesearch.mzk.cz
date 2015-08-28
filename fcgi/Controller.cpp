@@ -58,8 +58,14 @@ void Controller::ingestRequest(const Poco::Dynamic::Var& request) {
             if (json->has("dHash")) {
                 record.getHashes()[DHash] = str2bin(json->getValue<string>("dHash"));
             }
-            if (json->has("cannyDHash")) {
-                record.getHashes()[CannyDHash] = str2bin(json->getValue<string>("cannyDHash"));
+            if (json->has("gaussDHash")) {
+                record.getHashes()[GaussDHash] = str2bin(json->getValue<string>("gaussDHash"));
+            }
+            if (json->has("gauss2DHash")) {
+                record.getHashes()[Gauss2DHash] = str2bin(json->getValue<string>("gauss2DHash"));
+            }
+            if (json->has("gaussBlockHash")) {
+                record.getHashes()[GaussBlockHash] = str2bin(json->getValue<string>("gaussBlockHash"));
             }
             if (json->has("image_base64")) {
                 image_data = Image::fromBase64(json->getValue<string>("image_base64"));
@@ -106,8 +112,14 @@ void Controller::searchIdenticalRequest(std::map<std::string, std::string>& para
     if (params.count("dHash")) {
         record.getHashes()[DHash] = str2bin(params["dHash"]);
     }
-    if (params.count("cannyDHash")) {
-        record.getHashes()[CannyDHash] = str2bin(params["cannyDHash"]);
+    if (params.count("gaussDHash")) {
+        record.getHashes()[GaussDHash] = str2bin(params["gaussDHash"]);
+    }
+    if (params.count("gauss2DHash")) {
+        record.getHashes()[Gauss2DHash] = str2bin(params["gauss2DHash"]);
+    }
+    if (params.count("gaussBlockHash")) {
+        record.getHashes()[GaussBlockHash] = str2bin(params["gaussBlockHash"]);
     }
     if (params.count("url")) {
         image_data = Image::fromUrl(params["url"]);
@@ -142,8 +154,14 @@ void Controller::searchSimilarRequest(std::map<std::string, std::string>& params
     if (params.count("dHash")) {
         record.getHashes()[DHash] = str2bin(params["dHash"]);
     }
-    if (params.count("cannyDHash")) {
-        record.getHashes()[CannyDHash] = str2bin(params["cannyDHash"]);
+    if (params.count("gaussDHash")) {
+        record.getHashes()[GaussDHash] = str2bin(params["gaussDHash"]);
+    }
+    if (params.count("gauss2DHash")) {
+        record.getHashes()[Gauss2DHash] = str2bin(params["gauss2DHash"]);
+    }
+    if (params.count("gaussBlockHash")) {
+        record.getHashes()[GaussBlockHash] = str2bin(params["gaussBlockHash"]);
     }
     if (params.count("url")) {
         image_data = Image::fromUrl(params["url"]);
