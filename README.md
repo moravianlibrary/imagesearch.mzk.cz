@@ -36,7 +36,7 @@ case "$1" in
     else
       touch $LOCK
       echo "Starting imagesearch.."
-      docker run --name $CONTAINER_NAME -p 8080:80 -v /var/imagesearch/:/data $IMAGE_NAME &
+      docker run --name $CONTAINER_NAME -p 127.0.0.1:8080:80 -v /var/imagesearch/:/data $IMAGE_NAME &
       echo "[OK] Imagesearch is running."
     fi
     ;;
@@ -158,20 +158,6 @@ After it enable new settings and reload apache server.
 ```
 # a2ensite imagesearch.mzk.cz
 # /etc/init.d/apache2 reload
-```
-
-**Attention:** Docker's default behavior is that it modifies iptables configuration and enables exposed ports defined by -p option. It is possible override this behavior by adding --iptables=false to the Docker daemon.
-
-On Debian based systems, you can edit /etc/default/docker and uncomment the DOCKER_OPTS line:
-
-```
-DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 --iptables=false"
-```
-
-After doing so, you need to restart Docker with
-
-```
-# /etc/init.d/docker restart
 ```
 
 ## API
